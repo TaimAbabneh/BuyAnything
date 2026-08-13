@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyAnything - Premium Marketplace</title>
+    <style>
+        :root { --primary: #2563eb; --primary-hover: #1d4ed8; --dark: #0f172a; --light: #f8fafc; --accent: #10b981; --text: #334155; --admin-color: #7c3aed; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--light); color: var(--text); min-height: 100vh; }
+        header { background-color: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .navbar { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
+        .brand { font-size: 24px; font-weight: 800; color: var(--primary); cursor: pointer; }
+        .nav-menus { display: flex; gap: 20px; align-items: center; }
+        .nav-btn { background: none; border: none; font-weight: 600; color: var(--text); cursor: pointer; padding: 8px 12px; border-radius: 6px; transition: 0.2s; }
+        .nav-btn:hover { background-color: #f1f5f9; color: var(--primary); }
+        .cart-badge { background-color: #ef4444; color: white; font-size: 12px; padding: 2px 6px; border-radius: 10px; margin-left: 4px; }
+        .admin-indicator { background-color: var(--admin-color); color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; display: none; }
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+        .market-layout { display: grid; grid-template-columns: 240px 1fr; gap: 30px; }
+        .sidebar { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); height: fit-content; }
+        .sidebar h3 { margin-bottom: 15px; font-size: 16px; color: var(--dark); }
+        .category-list button { display: block; width: 100%; text-align: left; padding: 10px; background: none; border: none; border-radius: 6px; cursor: pointer; margin-bottom: 5px; font-weight: 500; }
+        .category-list button.active { background-color: var(--primary); color: white; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .product-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; }
+        .product-card h4 { font-size: 18px; color: var(--dark); margin-bottom: 8px;}
+        .product-card .cat-tag { font-size: 12px; color: #64748b; margin-bottom: 15px; text-transform: uppercase;}
+        .product-card .price { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 15px;}
+        .form-box { max-width: 500px; margin: 0 auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .form-box h2 { margin-bottom: 24px; color: var(--dark); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 15px; outline: none; }
+        .form-group input:focus { border-color: var(--primary); }
+        .btn-action { width: 100%; padding: 12px; background-color: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 16px; }
+        .btn-action:hover { background-color: var(--primary-hover); }
+        .cart-list { margin-bottom: 30px; }
+        .cart-item { background: white; padding: 15px 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .ticket-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .ticket-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold; }
+        .admin-reply-box { background: #f1f5f9; padding: 10px 15px; border-left: 4px solid var(--admin-color); margin-top: 10px; border-radius: 0 6px 6px 0; }
+        .admin-dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="brand" onclick="switchView('market')">BuyAnything</div>
+            <div class="admin-indicator" id="adminBadge">Admin Mode</div>
+            <nav class="nav-menus">
+                <button class="nav-btn" onclick="switchView('market')">Shop</button>
+                <button class="nav-btn" onclick="switchView('suggestions')">Suggestions/Tickets</button>
+                <button class="nav-btn" onclick="switchView('cart')">Cart <span class="cart-badge" id="cartCount">0</span></button>
+                <button class="nav-btn" id="loginNavBtn" onclick="switchView('login')">Admin Access</button>
+                <button class="nav-btn" id="adminNavBtn" onclick="switchView('admin')" style="display:none; color: var(--admin-color);">Admin Panel</button>
+                <button class="nav-btn" id="logoutNavBtn" onclick="handleLogout()" style="display:none;">Logout</button>
+            </nav>
+        </div>
+    </header>
+    <main class="main-container">
+        <!-- VIEW: Marketplace HTML Layout -->
+        <section id="view-market" class="view-section active">
+            <div class="market-layout">
+                <aside class="sidebar">
+                    <h3>Categories</h3>
+                    <div class="category-list" id="marketCategories"></div>
+                </aside>
+                <div class="products-area">
+                    <div class="product-grid" id="marketProducts"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: Shopping Cart Layout -->
+        <section id="view-cart" class="view-section">
+            <div style="max-width: 700px; margin: 0 auto;">
+                <h2 style="margin-bottom: 20px;">Your Shopping Cart</h2>
+                <div id="cartItemsList" class="cart-list"></div>
+                <div style="text-align: right; margin-bottom: 30px;">
+                    <h3>Total: $<span id="cartTotal">0.00</span></h3>
+                </div>
+                <div class="form-box" style="margin: 0;">
+                    <h3>Complete Your Purchase</h3>
+                    <p style="font-size: 13px; margin-bottom: 15px; color: #64748b;">This order configuration transforms your products list into an explicit email sent directly to your administrative inbox.</p>
+                    <div class="form-group">
+                        <label>Your Full Name</label>
+                        <input type="text" id="orderName" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Delivery Address</label>
+                        <input type="text" id="orderAddress" placeholder="123 Street, City">
+                    </div>
+                    <button class="btn-action" onclick="submitOrder()">Email Order Details</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: Suggestions & Tickets System Layout -->
+        <section id="view-suggestions" class="view-section">
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="form-box" style="margin-bottom: 40px; max-width: 100%;">
+                    <h2>Submit an Item Suggestion Ticket</h2>
+                    <div class="form-group">
+                        <label>Suggested Item Name</label>
+                        <input type="text" id="suggestName" placeholder="What item should we add?">
+                    </div>
+                    <div class="form-group">
+                        <label>Additional Details / Description</label>
+                        <textarea id="suggestDesc" rows="4" placeholder="Explain why we need this item..."></textarea>
+                    </div>
+                    <button class="btn-action" onclick="createTicket()">Open Suggestion Ticket</button>
+                </div>
+                <h2>Community Suggestion Tickets</h2>
+                <div id="ticketContainer" style="margin-top: 20px;"></div>
+            </div>
+        </section>
+
+        <!-- VIEW: Secure Portal Authentication Layout -->
+        <section id="view-login" class="view-section">
+            <div class="form-box">
+                <h2>Admin Login</h2>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="loginUser" value="admin">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPass" value="admin123">
+                </div>
+                <button class="btn-action" style="background-color: var(--admin-color);" onclick="handleLogin()">Sign In</button>
+            </div>
+        </section>
+
+        <!-- VIEW: Admin Panel Dashboard Control Center -->
+        <section id="view-admin" class="view-section">
+            <h2 style="color: var(--admin-color); margin-bottom: 30px;">Admin Workspace Control</h2>
+            <div class="admin-dashboard">
+                <div>
+                    <div class="form-box" style="margin: 0 0 30px 0; max-width: 100%;">
+                        <h3>Configure Admin Target Email</h3>
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Target Email Address</label>
+                            <input type="email" id="adminConfigEmail" placeholder="your-email@example.com">
+                        </div>
+                        <button class="btn-action" style="background-color: var(--admin-color);" onclick="saveAdminSettings()">Save Configurations</button>
+                    </div>
+                    <div class="form-box" style="margin: 0; max-width: 100%;">
+                        <h3>Add New Category</h3>
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Category Name</label>
+                            <input type="text" id="newCatName" placeholder="e.g., Electronics">
+                        </div>
+                        <button class="btn-action" style="background-color: var(--admin-color);" onclick="addCategory()">Create Category</button>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-box" style="margin: 0; max-width: 100%;">
+                        <h3>Add New Catalog Item</h3>
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Item Name</label>
+                            <input type="text" id="newItemName">
+                        </div>
+                        <div class="form-group">
+                            <label>Assigned Category</label>
+                            <select id="newItemCategory"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Price ($)</label>
+                            <input type="number" id="newItemPrice" step="0.01">
+                        </div>
+                        <button class="btn-action" style="background-color: var(--admin-color);" onclick="addCatalogItem()">Publish to Catalog</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        var categories = JSON.parse(localStorage.getItem('ba_categories')) || ['Electronics', 'Apparel', 'Home Goods'];
+        var products = JSON.parse(localStorage.getItem('ba_products')) || [
+            { id: 1, name: 'Wireless Headphones', category: 'Electronics', price: 99.99 },
+            { id: 2, name: 'Graphic T-Shirt', category: 'Apparel', price: 24.99 }
+        ];
+        var tickets = JSON.parse(localStorage.getItem('ba_tickets')) || [];
+        var cart = []; var currentCategoryFilter = 'All'; var isAdmin = false;
+        var adminSettings = JSON.parse(localStorage.getItem('ba_settings')) || { email: 'admin@buyanything.com' };
+
+        function initApp() {
+            if(document.getElementById('adminConfigEmail')) document.getElementById('adminConfigEmail').value = adminSettings.email;
+            renderMarketCategories(); renderMarketProducts(); renderTickets(); updateCartCounter(); populateAdminDropdown();
+        }
+        function switchView(viewId) {
+            var s = document.querySelectorAll('.view-section');
+            for (var i = 0; i < s.length; i++) s[i].classList.remove('active');
+            var t = document.getElementById('view-' + viewId); if(t) t.classList.add('active');
+            if(viewId === 'market') { renderMarketCategories(); renderMarketProducts(); }
+            if(viewId === 'cart') renderCart(); if(viewId === 'suggestions') renderTickets(); if(viewId === 'admin') populateAdminDropdown();
+        }
+        function handleLogin() {
+            if (document.getElementById('loginUser').value === 'admin' && document.getElementById('loginPass').value === 'admin123') {
+                isAdmin = true; document.getElementById('adminBadge').style.display = 'block'; document.getElementById('adminNavBtn').style.display = 'block';
+                document.getElementById('logoutNavBtn').style.display = 'block'; document.getElementById('loginNavBtn').style.display = 'none'; switchView('admin');
+            } else { alert('Invalid administration credentials.'); }
+        }
+        function handleLogout() {
+            isAdmin = false; document.getElementById('adminBadge').style.display = 'none'; document.getElementById('adminNavBtn').style.display = 'none';
+            document.getElementById('logoutNavBtn').style.display = 'none'; document.getElementById('loginNavBtn').style.display = 'block'; switchView('market');
+        }
+        function saveAdminSettings() { adminSettings.email = document.getElementById('adminConfigEmail').value; localStorage.setItem('ba_settings', JSON.stringify(adminSettings)); alert('Admin target settings updated.'); }
+        function renderMarketCategories() {
+            var container = document.getElementById('marketCategories'); if(!container) return;
+            var html = '<button class="' + (currentCategoryFilter === 'All' ? 'active' : '') + '" onclick="filterCategory(\'All\')">All Items</button>';
+            for (var i = 0; i < categories.length; i++) html += '<button class="' + (currentCategoryFilter === categories[i] ? 'active' : '') + '" onclick="filterCategory(\'' + categories[i] + '\')">' + categories[i] + '</button>';
+            container.innerHTML = html;
+        }
+        function filterCategory(cat) { currentCategoryFilter = cat; renderMarketCategories(); renderMarketProducts(); }
+        function populateAdminDropdown() { var s = document.getElementById('newItemCategory'); if(s) s.innerHTML = categories.map(function(c) { return '<option value="' + c + '">' + c + '</option>'; }).join(''); }
+        function addCategory() {
+            var input = document.getElementById('newCatName'); if(!input || !input.value.trim()) return;
+            categories.push(input.value.trim()); localStorage.setItem('ba_categories', JSON.stringify(categories)); input.value = ''; alert('Category established.'); populateAdminDropdown();
+        }
+        function addCatalogItem() {
+            var n = document.getElementById('newItemName').value.trim(); var c = document.getElementById('newItemCategory').value; var p = parseFloat(document.getElementById('newItemPrice').value);
+            if(!n || !c || isNaN(p)) return alert('Provide full catalog metrics details.');
+            products.push({ id: Date.now(), name: n, category: c, price: p }); localStorage.setItem('ba_products', JSON.stringify(products));
+            document.getElementById('newItemName').value = ''; document.getElementById('newItemPrice').value = ''; alert('Published to catalog.');
+        }
+        function renderMarketProducts() {
+            var container = document.getElementById('marketProducts'); if(!container) return;
+            var f = []; for (var i = 0; i < products.length; i++) { if (currentCategoryFilter === 'All' || products[i].category === currentCategoryFilter) f.push(products[i]); }
+            if(f.length === 0) return container.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding:40px;">No items match this category.</p>';
+            container.innerHTML = f.map(function(p) { return '<div class="product-card"><div><h4>' + p.name + '</h4><div class="cat-tag">' + p.category + '</div></div><div><div class="price">$' + p.price.toFixed(2) + '</div><button class="btn-action" onclick="addToCart(' + p.id + ')">Add to Cart</button></div></div>'; }).join('');
+        }
+        function addToCart(id) { var p = products.find(function(x) { return x.id === id; }); if(p) { cart.push(p); updateCartCounter(); } }
+        function updateCartCounter() { var c = document.getElementById('cartCount'); if(c) c.innerText = cart.length; }
+        function renderCart() {
+            var container = document.getElementById('cartItemsList'); var totalSpan = document.getElementById('cartTotal'); if(!container || !totalSpan) return;
+            if(cart.length === 0) { container.innerHTML = '<p>Your cart is empty.</p>'; totalSpan.innerText = '0.00'; return; }
+            var total = 0; var html = '';
+            for (var i = 0; i < cart.length; i++) { total += cart[i].price; html += '<div class="cart-item"><div><strong>' + cart[i].name + '</strong><br><span style="font-size:12px; color:#64748b">' + cart[i].category + '</span></div><div style="display:flex; align-items:center; gap:15px;"><span>$' + cart[i].price.toFixed(2) + '</span><button onclick="removeFromCart(' + i + ')" style="color:#ef4444; border:none; background:none; cursor:pointer;">Remove</button></div></div>'; }
+            container.innerHTML = html; totalSpan.innerText = total.toFixed(2);
+        }
+        function removeFromCart(index) { cart.splice(index, 1); updateCartCounter(); renderCart(); }
+        function submitOrder() {
+            var n = document.getElementById('orderName').value.trim(); var a = document.getElementById('orderAddress').value.trim(); if(!n || !a || cart.length === 0) return alert('Provide full delivery specifications items.');
+            var arr = []; var totalVal = 0; for (var i = 0; i < cart.length; i++) { arr.push('- ' + cart[i].name + ' ($' + cart[i].price.toFixed(2) + ')'); totalVal += cart[i].price; }
+            window.location.href = 'mailto:' + adminSettings.email + '?subject=' + encodeURIComponent('New BuyAnything Order from ' + n) + '&body=' + encodeURIComponent('Order Details:\nName: ' + n + '\nAddress: ' + a + '\n\nItems Ordered:\n' + arr.join('\n') + '\n\nTotal: $' + totalVal.toFixed(2));
+            cart = []; updateCartCounter(); switchView('market'); alert('Order structured. Please fire up your local native mailer application to complete initialization sequence.');
+        }
+        function createTicket() {
+            var t = document.getElementById('suggestName').value.trim(); var m = document.getElementById('suggestDesc').value.trim(); if(!t || !m) return alert('Provide text fields details.');
+            tickets.push({ id: Date.now(), title: t, message: m, reply: "" }); localStorage.setItem('ba_tickets', JSON.stringify(tickets));
+            document.getElementById('suggestName').value = ''; document.getElementById('suggestDesc').value = ''; renderTickets(); alert('Ticket submitted.');
+        }
+        function renderTickets() {
+            var container = document.getElementById('ticketContainer'); if(!container) return; if(tickets.length === 0) return container.innerHTML = '<p>No current feedback tracking actions active.</p>';
+            container.innerHTML = tickets.map(function(t) {
+                var rb = t.reply ? '<div class="admin-reply-box"><strong>Admin Response:</strong> ' + t.reply + '</div>' : '';
+                var aa = (isAdmin && !t.reply) ? '<div style="margin-top:15px; display:flex; gap:10px;"><input type="text" id="reply-input-' + t.id + '" placeholder="Type response strategy panel choice..." style="flex:1; padding:8px; border:1px solid #cbd5e1; border-radius:6px;"><button onclick="submitReply(' + t.id + ')" style="background:var(--admin-color); color:white; padding:8px 15px; border:none; border-radius:6px; cursor:pointer; font-weight:600;">Reply</button></div>' : '';
+                return '<div class="ticket-card"><div class="ticket-header"><span>Ticket ID: #' + t.id + '</span><span style="color: ' + (t.reply ? 'var(--accent)' : '#f59e0b') + '">' + (t.reply ? 'Responded' : 'Awaiting Review') + '</span></div><div style="margin-bottom:10px;"><strong>Suggestion:</strong> ' + t.title + '</div><p style="color:#475569; font-size:14px; background:#f8fafc; padding:10px; border-radius:6px;">' + t.message + '</p>' + rb + aa + '</div>';
+            }).join('');
+        }
+        function submitReply(id) {
+            var val = document.getElementById('reply-input-' + id).value.trim(); if(!val) return;
+            var target = tickets.find(function(t) { return t.id === id; }); if(target) { target.reply = val; localStorage.setItem('ba_tickets', JSON.stringify(tickets)); renderTickets(); }
+        }
+        window.onload = initApp;
+    </script>
+</body>
+</html>
