@@ -6,42 +6,45 @@
     <title>BuyAnything - Premium Executive Marketplace</title> 
     <style> 
         :root { 
-            --bg-canvas: #090b11; 
-            --bg-surface: #111420; 
-            --bg-card: #171c2e; 
+            --bg-canvas: #06080f; 
+            --bg-surface: rgba(17, 22, 40, 0.65); 
+            --bg-card: rgba(26, 33, 56, 0.5); 
             --primary: #38bdf8; 
-            --primary-hover: #0284c7; 
-            --accent: #34d399; 
+            --primary-hover: #0ea5e9; 
+            --accent: #10b981; 
+            --accent-hover: #059669;
             --text-main: #f8fafc; 
             --text-muted: #94a3b8; 
-            --border-line: rgba(255,255,255,0.06); 
-            --radius-lg: 20px; 
-            --radius-md: 14px; 
-            --radius-sm: 10px; 
-            --layer-shadow: 0 20px 40px -15px rgba(0,0,0,0.6); 
-            --fluid-motion: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
+            --border-line: rgba(255, 255, 255, 0.07); 
+            --radius-lg: 24px; 
+            --radius-md: 16px; 
+            --radius-sm: 12px; 
+            --glass-blur: blur(16px);
+            --layer-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); 
+            --fluid-motion: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
         } 
 
         * { 
             margin: 0; 
             padding: 0; 
             box-sizing: border-box; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
         } 
 
         body { 
-            background-color: var(--bg-canvas); 
+            background: radial-gradient(circle at 50% 0%, #131d35 0%, var(--bg-canvas) 70%);
             color: var(--text-main); 
             min-height: 100vh; 
             font-size: 16px; 
-            padding-bottom: 80px; 
+            padding-bottom: 100px; 
             overflow-x: hidden; 
             -webkit-font-smoothing: antialiased; 
         } 
 
         header { 
-            background: rgba(17, 20, 32, 0.75); 
-            backdrop-filter: blur(20px); 
+            background: rgba(6, 8, 15, 0.7); 
+            backdrop-filter: var(--glass-blur); 
+            -webkit-backdrop-filter: var(--glass-blur);
             border-bottom: 1px solid var(--border-line); 
             position: sticky; 
             top: 0; 
@@ -54,19 +57,19 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            padding: 22px 40px; 
+            padding: 20px 40px; 
         } 
 
         .brand { 
-            font-size: 30px; 
+            font-size: 28px; 
             font-weight: 800; 
             color: white; 
             cursor: pointer; 
-            letter-spacing: -0.5px; 
+            letter-spacing: -0.75px; 
             transition: var(--fluid-motion); 
             display: flex; 
             align-items: center; 
-            gap: 8px; 
+            gap: 4px; 
         } 
 
         .brand span { 
@@ -74,7 +77,7 @@
         } 
 
         .brand:hover { 
-            transform: scale(1.01); 
+            transform: translateY(-1px);
             opacity: 0.95; 
         } 
 
@@ -85,53 +88,61 @@
         } 
 
         .nav-btn { 
-            background: rgba(255,255,255,0.02); 
+            background: rgba(255, 255, 255, 0.03); 
             border: 1px solid var(--border-line); 
             font-weight: 600; 
-            font-size: 15px; 
+            font-size: 14px; 
             color: var(--text-muted); 
             cursor: pointer; 
-            padding: 12px 24px; 
+            padding: 12px 22px; 
             border-radius: var(--radius-sm); 
             transition: var(--fluid-motion); 
         } 
 
         .nav-btn:hover { 
-            background: rgba(255,255,255,0.06); 
+            background: rgba(255, 255, 255, 0.08); 
             color: white; 
-            border-color: var(--primary); 
+            border-color: rgba(255, 255, 255, 0.2); 
         } 
+
+        .nav-btn.active-tab {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
 
         .cart-badge { 
             background: var(--primary); 
-            color: #090b11; 
-            font-size: 12px; 
-            padding: 2px 8px; 
+            color: #06080f; 
+            font-size: 11px; 
+            padding: 2px 7px; 
             border-radius: 30px; 
-            margin-left: 6px; 
+            margin-left: 4px; 
             font-weight: 800; 
         } 
 
         .admin-indicator { 
-            background: rgba(56,189,248,0.1); 
-            border: 1px solid rgba(56,189,248,0.2); 
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(16, 185, 129, 0.15)); 
+            border: 1px solid rgba(56, 189, 248, 0.3); 
             color: var(--primary); 
-            padding: 8px 18px; 
+            padding: 10px 20px; 
             border-radius: 40px; 
             font-size: 13px; 
             font-weight: 700; 
             display: none; 
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
         } 
 
         .main-container { 
             max-width: 1500px; 
-            margin: 50px auto; 
+            margin: 40px auto; 
             padding: 0 40px; 
         } 
 
         .view-section { 
             display: none; 
-            animation: viewGate 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            animation: viewGate 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
         } 
 
         .view-section.active { 
@@ -139,40 +150,36 @@
         } 
 
         @keyframes viewGate { 
-            from { opacity: 0; transform: translateY(12px); filter: blur(4px); } 
+            from { opacity: 0; transform: translateY(20px); filter: blur(8px); } 
             to { opacity: 1; transform: translateY(0); filter: blur(0); } 
         } 
 
         .market-layout { 
             display: grid; 
-            grid-template-columns: 310px 1fr; 
-            gap: 45px; 
+            grid-template-columns: 320px 1fr; 
+            gap: 40px; 
         } 
 
         .sidebar { 
             background: var(--bg-surface); 
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             border: 1px solid var(--border-line); 
             padding: 30px; 
             border-radius: var(--radius-lg); 
             box-shadow: var(--layer-shadow); 
             height: fit-content; 
-            transition: var(--fluid-motion); 
-        } 
-
-        .sidebar:hover { 
-            border-color: rgba(56,189,248,0.15); 
-            box-shadow: 0 30px 60px -10px rgba(0,0,0,0.7); 
         } 
 
         .sidebar h3 { 
-            margin-bottom: 22px; 
-            font-size: 14px; 
+            margin-bottom: 20px; 
+            font-size: 12px; 
             color: var(--text-muted); 
-            font-weight: 700; 
-            letter-spacing: 1.5px; 
+            font-weight: 800; 
+            letter-spacing: 2px; 
             text-transform: uppercase; 
             border-bottom: 1px solid var(--border-line); 
-            padding-bottom: 10px; 
+            padding-bottom: 12px; 
         } 
 
         .category-list { 
@@ -185,7 +192,7 @@
             display: block; 
             width: 100%; 
             text-align: left; 
-            padding: 14px 20px; 
+            padding: 14px 18px; 
             background: transparent; 
             border: 1px solid transparent; 
             border-radius: var(--radius-md); 
@@ -194,32 +201,32 @@
             font-size: 15px; 
             color: var(--text-muted); 
             transition: var(--fluid-motion); 
-            position: relative; 
         } 
 
         .cat-pill.active { 
-            background: var(--bg-card); 
+            background: rgba(255, 255, 255, 0.05); 
             color: white; 
             border-color: var(--border-line); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
             transform: translateX(4px); 
         } 
 
         .cat-pill:not(.active):hover { 
             color: white; 
-            padding-left: 26px; 
-            background: rgba(255,255,255,0.02); 
-            border-color: rgba(255,255,255,0.02); 
+            padding-left: 24px; 
+            background: rgba(255, 255, 255, 0.02); 
         } 
 
         .product-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-            gap: 35px; 
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); 
+            gap: 30px; 
         } 
 
         .product-card { 
             background: var(--bg-surface); 
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             border: 1px solid var(--border-line); 
             border-radius: var(--radius-lg); 
             overflow: hidden; 
@@ -227,19 +234,18 @@
             display: flex; 
             flex-direction: column; 
             transition: var(--fluid-motion); 
-            position: relative; 
         } 
 
         .product-card:hover { 
-            transform: translateY(-8px) scale(1.01); 
-            border-color: rgba(56,189,248,0.3); 
-            box-shadow: 0 35px 60px -10px rgba(0,0,0,0.6), 0 0 30px -5px rgba(56,189,248,0.15); 
+            transform: translateY(-6px); 
+            border-color: rgba(56, 189, 248, 0.35); 
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(56, 189, 248, 0.15); 
         } 
 
         .product-img-wrapper { 
             width: 100%; 
-            height: 260px; 
-            background: #0c0e17; 
+            height: 250px; 
+            background: #090d16; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
@@ -256,482 +262,394 @@
         } 
 
         .product-card:hover .product-img { 
-            transform: scale(1.06) rotate(0.5deg); 
+            transform: scale(1.05); 
             filter: brightness(1.05); 
         } 
 
         .product-placeholder { 
-            color: #272f45; 
-            font-size: 15px; 
+            color: #1e293b; 
+            font-size: 14px; 
             font-weight: 700; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             gap: 12px; 
             text-transform: uppercase; 
-            letter-spacing: 1px; 
+            letter-spacing: 1.5px; 
         } 
 
         .product-info { 
-            padding: 28px; 
+            padding: 24px; 
             display: flex; 
             flex-direction: column; 
             flex-grow: 1; 
             justify-content: space-between; 
-            gap: 20px; 
-            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.2)); 
+            gap: 18px; 
         } 
 
         .cat-tag { 
             font-size: 11px; 
-            color: var(--text-muted); 
-            background: rgba(255,255,255,0.04); 
+            color: var(--primary); 
+            background: rgba(56, 189, 248, 0.08); 
             padding: 5px 12px; 
             border-radius: 6px; 
             width: fit-content; 
-            font-weight: 600; 
+            font-weight: 700; 
             text-transform: uppercase; 
             letter-spacing: 0.5px; 
-            border: 1px solid var(--border-line); 
-            transition: var(--fluid-motion); 
-        } 
-
-        .product-card:hover .cat-tag { 
-            color: var(--primary); 
-            background: rgba(56,189,248,0.06); 
-            border-color: rgba(56,189,248,0.2); 
+            border: 1px solid rgba(56, 189, 248, 0.15); 
         } 
 
         .product-card h4 { 
-            font-size: 22px; 
+            font-size: 20px; 
             color: white; 
             font-weight: 700; 
-            line-height: 1.35; 
-            letter-spacing: -0.2px; 
-            transition: var(--fluid-motion); 
-        } 
-
-        .product-card:hover h4 { 
-            color: var(--primary); 
+            line-height: 1.4; 
+            margin-top: 8px;
         } 
 
         .product-footer { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            padding-top: 18px; 
+            padding-top: 16px; 
             border-top: 1px solid var(--border-line); 
         } 
 
         .product-card .price { 
-            font-size: 24px; 
-            font-weight: 700; 
+            font-size: 22px; 
+            font-weight: 800; 
             color: white; 
+            letter-spacing: -0.5px;
         } 
 
         .form-box { 
-            max-width: 620px; 
+            max-width: 650px; 
             margin: 0 auto; 
             background: var(--bg-surface); 
-            padding: 45px; 
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            padding: 40px; 
             border-radius: var(--radius-lg); 
             box-shadow: var(--layer-shadow); 
-            border: 1px solid var(--border-line); 
-        } 
-
-        .form-box h2 { 
-            margin-bottom: 30px; 
-            color: white; 
-            font-weight: 800; 
-        font-size: 28px;
-        letter-spacing: -0.5px;
-    }
-    .form-box h3 {
-        margin-bottom: 20px;
-        color: white;
-        font-weight: 700;
-        font-size: 20px;
-    }
-    .form-group {
-        margin-bottom: 25px;
-    }
-    .form-group label {
-        display: block;
-        margin-bottom: 10px;
-        font-weight: 600;
-        font-size: 14px;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    .form-group input, .form-group select, .form-group textarea {
-        width: 100%;
-        padding: 14px 18px;
-        background: var(--bg-canvas);
         border: 1px solid var(--border-line);
-        border-radius: var(--radius-md);
-        font-size: 16px;
-        outline: none;
-        color: white;
-        transition: var(--fluid-motion);
     }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 4px rgba(56,189,248,0.1);
-    }
-    .btn-action {
-        width: 100%;
-        padding: 16px;
-        background: white;
-        color: var(--bg-canvas);
-        border: none;
-        border-radius: var(--radius-md);
-        font-weight: 700;
-        cursor: pointer;
-        font-size: 16px;
-        transition: var(--fluid-motion);
-    }
-    .btn-action:hover {
-        background: var(--primary);
-        color: #090b11;
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(56,189,248,0.2);
-    }
-    .empty-state {
-        grid-column: 1/-1;
-        text-align: center;
-        padding: 70px 40px;
-        background: rgba(255,255,255,0.01);
-        border-radius: var(--radius-lg);
-        border: 1px dashed var(--border-line);
-    }
-    .empty-state h3 {
-        font-size: 20px;
-        font-weight: 700;
-        color: white;
+
+    .admin-grid-layout { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 30px; 
+        margin-top: 20px; 
+    } 
+
+    .list-management-row {
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center;
+        padding: 12px 16px; 
+        background: rgba(6, 8, 15, 0.2);
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-line);
         margin-bottom: 8px;
     }
-    .empty-state p {
-        color: var(--text-muted);
-        max-width: 480px;
-        margin: 0 auto;
-        line-height: 1.6;
-    }
-    .cart-list {
-        margin-bottom: 30px;
-    }
-    .cart-item {
-        background: var(--bg-surface);
-        padding: 22px 28px;
-        border-radius: var(--radius-md);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 12px;
-        border: 1px solid var(--border-line);
-    }
-    .ticket-card {
-        background: var(--bg-surface);
-        padding: 28px;
-        border-radius: var(--radius-lg);
-        margin-bottom: 22px;
-        box-shadow: var(--layer-shadow);
-        border: 1px solid var(--border-line);
-        border-left: 6px solid #475569;
-    }
-    .ticket-card.answered {
-        border-left-color: var(--accent);
-    }
-    .ticket-card.pending {
-        border-left-color: #f59e0b;
-    }
-    .ticket-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--text-muted);
-        border-bottom: 1px solid var(--border-line);
-        padding-bottom: 14px;
-        margin-bottom: 14px;
-    }
-    .admin-reply-box {
-        background: rgba(56,189,248,0.03);
-        padding: 18px;
-        border-left: 3px solid var(--primary);
-        margin-top: 18px;
-        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-        color: #bae6fd;
+
+    .list-management-row span {
         font-weight: 600;
-        line-height: 1.6;
-        border: 1px solid rgba(56,189,248,0.08);
-        border-left: none;
+        font-size: 14px;
     }
-    .admin-grid-layout {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 35px;
-        margin-top: 20px;
+
+    .category-header-title {
+        color: white; 
+        margin: 30px 0 15px 0; 
+        font-size: 22px; 
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .category-header-title::after {
+        content: '';
+        flex-grow: 1;
+        height: 1px;
+        background: linear-gradient(to right, var(--border-line), transparent);
+        margin-left: 15px;
     }
 </style> 
 </head> 
 <body> 
-    <header>
-        <div class="navbar"> 
-            <div class="brand" onclick="switchView('market')">Buy<span>Anything</span></div> 
-            <div class="admin-indicator" id="adminBadge">Authorized Deck</div> 
-            <nav class="nav-menus"> 
-                <button class="nav-btn" onclick="switchView('market')">Store</button> 
-                <button class="nav-btn" onclick="switchView('suggestions')">Tickets</button> 
-                <button class="nav-btn" onclick="switchView('cart')">Cart (<span id="cartCount">0</span>)</button> 
-                <button class="nav-btn" id="loginNavBtn" onclick="switchView('login')">Login</button> 
-                <button class="nav-btn" id="adminNavBtn" onclick="switchView('admin')" style="display:none; color: var(--primary); border-color: rgba(56,189,248,0.2);">Deck</button> 
-                <button class="nav-btn" id="logoutNavBtn" onclick="handleLogout()" style="display:none;">Exit</button> 
-            </nav> 
+<header>
+    <div class="navbar"> 
+        <div class="brand" onclick="switchView('market')">Buy<span>Anything</span></div> 
+        <div class="admin-indicator" id="adminBadge">Authorized Operational Node</div> 
+        <nav class="nav-menus"> 
+            <button class="nav-btn active-tab" id="btn-market" onclick="switchView('market')">Storefront</button> 
+            <button class="nav-btn" id="btn-suggestions" onclick="switchView('suggestions')">Simulation Tickets</button> 
+            <button class="nav-btn" id="btn-cart" onclick="switchView('cart')">Cart Pipeline (<span id="cartCount">0</span>)</button> 
+            <button class="nav-btn" id="loginNavBtn" onclick="switchView('login')">Auth Terminal</button> 
+            <button class="nav-btn" id="adminNavBtn" onclick="switchView('admin')" style="display:none; color: var(--primary); border-color: rgba(56,189,248,0.25);">Deck</button> 
+            <button class="nav-btn" id="logoutNavBtn" onclick="handleLogout()" style="display:none;">Exit</button> 
+        </nav> 
+    </div> 
+</header> 
+
+<main class="main-container">
+    <section id="view-market" class="view-section active"> 
+        <div class="market-layout"> 
+            <aside class="sidebar">
+                <h3>Collections</h3>
+                <div class="category-list" id="marketCategories"></div>
+            </aside> 
+            <div class="products-area">
+                <div class="product-grid" id="marketProducts"></div>
+            </div> 
         </div> 
-    </header> 
+    </section> 
 
-    <main class="main-container"> 
-        <section id="view-market" class="view-section active"> 
-            <div class="market-layout"> 
-                <aside class="sidebar">
-                    <h3>Collections</h3>
-                    <div class="category-list" id="marketCategories"></div>
-                </aside> 
-                <div class="products-area">
-                    <div class="product-grid" id="marketProducts"></div>
-                </div> 
+    <section id="view-cart" class="view-section"> 
+        <div style="max-width: 850px; margin: 0 auto;"> 
+            <h2 style="margin-bottom: 25px; font-weight: 800; letter-spacing: -0.5px;">Shopping Checkout Pipeline</h2> 
+            <div id="cartItemsList" class="cart-list"></div> 
+            <div style="text-align: right; margin-bottom: 40px;"><h3 style="font-size:24px; font-weight: 800;">Total Balance: <span id="cartTotal" style="color: var(--primary);">$0.00</span></h3></div> 
+            <div class="form-box" style="margin: 0; max-width:100%;"> 
+                <h3>Verify Order Routing</h3> 
+                <p style="font-size: 14px; margin-bottom: 25px; color: var(--text-muted);">This packages your data items list profile securely to dispatch with your default system mailing path client handler.</p> 
+                <div class="form-group"><label>Consignee Name</label><input type="text" id="orderName" placeholder="John Doe"></div> 
+                <div class="form-group"><label>Destination Address</label><input type="text" id="orderAddress" placeholder="123 Luxury Lane, Metropolis"></div> 
+                <button class="btn-action" onclick="submitOrder()">Dispatch Order Path</button> 
             </div> 
-        </section> 
-        <section id="view-cart" class="view-section"> 
-            <div style="max-width: 800px; margin: 0 auto;"> 
-                <h2 style="margin-bottom: 25px;">Shopping Checkout Pipeline</h2> 
-                <div id="cartItemsList" class="cart-list"></div> 
-                <div style="text-align: right; margin-bottom: 40px;"><h3 style="font-size:24px;">Total Balance: $<span id="cartTotal">0.00</span></h3></div> 
-                <div class="form-box" style="margin: 0; max-width:100%;"> 
-                    <h3>Verify Order Routing</h3> 
-                    <p style="font-size: 14px; margin-bottom: 25px; color: var(--text-muted);">This packages your items list profile securely to link with your default mailing path client handler.</p> 
-                    <div class="form-group"><label>Consignee Name</label><input type="text" id="orderName" placeholder="John Doe"></div> 
-                    <div class="form-group"><label>Destination Address</label><input type="text" id="orderAddress" placeholder="123 Street, City, Country"></div> 
-                    <button class="btn-action" onclick="submitOrder()">Dispatch Order Path</button> 
-                </div> 
-            </div> 
-        </section> 
+        </div> 
+    </section> 
 
-        <section id="view-suggestions" class="view-section"> 
-            <div style="max-width: 950px; margin: 0 auto;"> 
-                <div class="form-box" style="margin-bottom: 40px; max-width: 100%;"> 
-                    <h2>Deploy Concept Simulation Ticket</h2> 
-                    <div class="form-group"><label>Proposed Asset Name</label><input type="text" id="suggestName" placeholder="What asset line do we need?"></div> 
-                    <div class="form-group"><label>Technical Description</label><textarea id="suggestDesc" rows="4" placeholder="Explain requirements..."></textarea></div> 
-                    <button class="btn-action" onclick="createTicket()">Launch Feedback Node</button> 
-                </div> 
-                <div id="userTicketMessage" style="display:block; text-align:center; padding:40px; border:1px dashed var(--border-line); background:var(--bg-surface); border-radius:12px;"> 
-                    <h3 style="color:white; margin-bottom:10px;">Ticket Successfully Initialized</h3> 
-                    <p style="color:var(--text-muted); font-size:15px; max-width:500px; margin:0 auto;">For optimal security metrics, the full dynamic tracking history board and operational admin-to-admin chat loop arrays are restricted exclusively to authorized administrative nodes.</p> 
-                </div> 
-                <div id="adminChatDashboard" style="display:none;"></div> 
+    <section id="view-suggestions" class="view-section"> 
+        <div style="max-width: 950px; margin: 0 auto;"> 
+            <div class="form-box" style="margin-bottom: 40px; max-width: 100%;"> 
+                <h2>Deploy Concept Simulation Ticket</h2> 
+                <div class="form-group"><label>Proposed Asset Line Name</label><input type="text" id="suggestName" placeholder="What core asset line do we need?"></div> 
+                <div class="form-group"><label>Technical Feature Requirements</label><textarea id="suggestDesc" rows="4" placeholder="Explain explicit simulation parameters..."></textarea></div> 
+                <button class="btn-action" onclick="createTicket()">Launch Feedback Node</button> 
             </div> 
-        </section> 
+            <div id="userTicketMessage" style="display:block; text-align:center; padding:40px; border:1px dashed var(--border-line); background:var(--bg-surface); border-radius:16px; backdrop-filter: var(--glass-blur);"> 
+                <h3 style="color:white; margin-bottom:10px;">Ticket Stream Connected</h3> 
+                <p style="color:var(--text-muted); font-size:14px; max-width:550px; margin:0 auto; line-height: 1.6;">For elevated security compliance thresholds, the complete dynamic ticket response tracking board and real-time administrative chat arrays remain restricted exclusively to active system operators.</p> 
+            </div> 
+            <div id="adminChatDashboard" style="display:none;"></div> 
+        </div> 
+    </section> 
 
-        <section id="view-login" class="view-section"> 
-            <div class="form-box"> 
-                <h2>Admin Identity Auth</h2> 
-                <div class="form-group"><label>Pass Key Validation</label><input type="password" id="loginPass" placeholder="••••••••"></div> 
-                <button class="btn-action" onclick="handleLogin()">Unlock Control Terminal</button> 
-            </div> 
-        </section> 
-        <section id="view-admin" class="view-section"> 
-            <h2 style="color: var(--primary); margin-bottom: 35px;">Master Operations Deck</h2> 
-            <div class="admin-grid-layout"> 
-                <div> 
-                    <div class="form-box" style="margin: 0 0 35px 0; max-width: 100%;"> 
-                        <h3>Configure Target Mailbox</h3> 
-                        <div class="form-group" style="margin-top: 15px;"><label>Invoice Receiver Email</label><input type="email" id="adminConfigEmail" placeholder="admin@buyanything.com"></div> 
-                        <button class="btn-action" onclick="saveAdminSettings()">Save Configuration</button> 
-                    </div>
-                    <div class="form-box" style="margin: 0 0 35px 0; max-width: 100%;"> 
-                        <h3>Active Category Groups</h3> 
-                        <div id="adminCategoryList" style="margin-top:15px; max-height:200px; overflow-y:auto; padding-right:5px;"></div> 
-                    </div> 
-                    <div class="form-box" style="margin: 0; max-width: 100%;"> 
-                        <h3>Map New Category Group</h3> 
-                        <div class="form-group" style="margin-top: 15px;"><label>Category Identifier</label><input type="text" id="newCatName" placeholder="e.g., Luxury Horology"></div> 
-                        <button class="btn-action" onclick="addCategory()">Inject Category Node</button> 
-                    </div> 
-                </div> 
-                <div> 
-                    <div class="form-box" style="margin: 0 0 35px 0; max-width: 100%;"> 
-                        <h3>Active Catalog Assets</h3> 
-                        <div id="adminProductList" style="margin-top:15px; max-height:200px; overflow-y:auto; padding-right:5px;"></div> 
-                    </div>
-                    <div class="form-box" style="margin: 0; max-width: 100%;"> 
-                        <h3>Publish New Item Asset</h3> 
-                        <div class="form-group" style="margin-top: 15px;"><label>Item Name</label><input type="text" id="newItemName" placeholder="Premium Watch"></div>
-                        <div class="form-group"><label>Category Assignment</label><select id="newItemCategory"></select></div>
-                        <div class="form-group"><label>Item Value Price ($)</label><input type="number" id="newItemPrice" placeholder="499.99" step="0.01"></div>
-                        <div class="form-group"> 
-                            <label>Asset Image Presentation URI Link</label> 
-                            <div style="display: flex; gap: 10px;"> 
-                                <input type="text" id="newItemImageUrl" placeholder="https://unsplash.com..."> 
-                                <button class="btn-action" onclick="triggerAIEngine()" style="width: auto; padding: 0 20px; white-space: nowrap; background: var(--primary); color: #090b11;">Generate AI Image</button> 
-                            </div> 
-                        </div> 
-                        <button class="btn-action" onclick="addCatalogItem()">Publish to Showcase</button>
-                    </div>
+    <section id="view-login" class="view-section"> 
+        <div class="form-box"> 
+            <h2>Identity Authentication</h2> 
+            <div class="form-group"><label>Pass Key Validation</label><input type="password" id="loginPass" placeholder="••••••••"></div> 
+            <button class="btn-action" onclick="handleLogin()">Unlock Terminal Interface</button> 
+        </div> 
+    </section> 
+
+    <section id="view-admin" class="view-section"> 
+        <h2 style="color: var(--primary); margin-bottom: 30px; font-weight: 800; letter-spacing: -0.5px;">Master Operations Deck</h2> 
+        <div class="admin-grid-layout"> 
+            <div> 
+                <div class="form-box" style="margin: 0 0 30px 0; max-width: 100%;"> 
+                    <h3>Configure Target Mailbox</h3> 
+                    <div class="form-group" style="margin-top: 15px;"><label>Invoice Receiver Email</label><input type="email" id="adminConfigEmail" placeholder="admin@buyanything.com"></div> 
+                    <button class="btn-action" onclick="saveAdminSettings()">Sync Configuration</button> 
                 </div>
+                <div class="form-box" style="margin: 0 0 30px 0; max-width: 100%;"> 
+                    <h3>Active Category Groups</h3> 
+                    <div id="adminCategoryList" style="margin-top:15px; max-height:220px; overflow-y:auto; padding-right:5px;"></div> 
+                </div> 
+                <div class="form-box" style="margin: 0; max-width: 100%;"> 
+                    <h3>Map New Category Group</h3> 
+                    <div class="form-group" style="margin-top: 15px;"><label>Category Identifier Name</label><input type="text" id="newCatName" placeholder="e.g., Luxury Horology"></div> 
+                    <button class="btn-action" onclick="addCategory()">Inject Category Node</button> 
+                </div> 
             </div> 
-        </section> 
-    </main>
+            <div> 
+                <div class="form-box" style="margin: 0 0 30px 0; max-width: 100%;"> 
+                    <h3>Active Catalog Assets</h3> 
+                    <div id="adminProductList" style="margin-top:15px; max-height:220px; overflow-y:auto; padding-right:5px;"></div> 
+                </div>
+                <div class="form-box" style="margin: 0; max-width: 100%;"> 
+                    <h3>Publish New Item Asset</h3> 
+                    <div class="form-group" style="margin-top: 15px;"><label>Presentation Item Name</label><input type="text" id="newItemName" placeholder="Chronograph Rose Gold"></div>
+                    <div class="form-group"><label>Category Assignment</label><select id="newItemCategory"></select></div>
+                    <div class="form-group"><label>Asset Base Evaluation Price ($)</label><input type="number" id="newItemPrice" placeholder="12450.00" step="0.01"></div>
+                    <div class="form-group"> 
+                        <label>Asset Image Presentation URI Link</label> 
+                        <div style="display: flex; gap: 10px;"> 
+                            <input type="text" id="newItemImageUrl" placeholder="https://unsplash.com..."> 
+                            <button class="btn-action" onclick="triggerAIEngine()" style="width: auto; padding: 0 20px; white-space: nowrap; background: var(--primary); color: #06080f;">Generate AI Image</button> 
+                        </div> 
+                    </div> 
+                    <button class="btn-action" onclick="addCatalogItem()" style="background: var(--primary); color: #06080f;">Publish to Global Showcase</button>
+                </div>
+            </div>
+        </div> 
+    </section> 
+</main>
 
-    <script>
-        var categories = JSON.parse(localStorage.getItem('ba_categories')) || ['Electronics', 'Apparel', 'Accessories']; 
-        var products = JSON.parse(localStorage.getItem('ba_products')) || []; 
-        var tickets = JSON.parse(localStorage.getItem('ba_tickets')) || []; 
-        var cart = []; 
-        var currentCategoryFilter = 'All'; 
-        var isAdmin = false; 
-        var adminSettings = JSON.parse(localStorage.getItem('ba_settings')) || { email: 'admin@buyanything.com' }; 
+<script>
+    var categories = JSON.parse(localStorage.getItem('ba_categories')) || ['Electronics', 'Apparel', 'Accessories']; 
+    var products = JSON.parse(localStorage.getItem('ba_products')) || []; 
+    var tickets = JSON.parse(localStorage.getItem('ba_tickets')) || []; 
+    var cart = []; 
+    var currentCategoryFilter = 'All'; 
+    var isAdmin = false; 
+    var adminSettings = JSON.parse(localStorage.getItem('ba_settings')) || { email: 'admin@buyanything.com' }; 
 
-        function initApp() { 
-            if(document.getElementById('adminConfigEmail')) { 
-                document.getElementById('adminConfigEmail').value = adminSettings.email; 
-            } 
-            renderMarketCategories(); 
-            renderMarketProducts(); 
-            renderTickets(); 
-            updateCartCounter(); 
-            populateAdminDropdown(); 
-            renderAdminManagementLists(); 
+    function initApp() { 
+        if(document.getElementById('adminConfigEmail')) { 
+            document.getElementById('adminConfigEmail').value = adminSettings.email; 
         } 
+        renderMarketCategories(); 
+        renderMarketProducts(); 
+        renderTickets(); 
+        updateCartCounter(); 
+        populateAdminDropdown(); 
+        renderAdminManagementLists(); 
+    } 
 
-        function switchView(viewId) { 
-            var s = document.querySelectorAll('.view-section'); 
-            for (var i = 0; i < s.length; i++) s[i].classList.remove('active'); 
-            var t = document.getElementById('view-' + viewId); 
-            if(t) t.classList.add('active'); 
-            
-            if(viewId === 'market') { 
-                renderMarketCategories(); 
-                renderMarketProducts(); 
-            } 
-            if(viewId === 'cart') renderCart(); 
-            if(viewId === 'suggestions') renderTickets(); 
-            if(viewId === 'admin') { 
-                populateAdminDropdown(); 
-                renderAdminManagementLists(); 
-            } 
-        } 
-
-        function handleLogin() { 
-            var pass = document.getElementById('loginPass').value; 
-            if (pass === 'buyanything123') { 
-                isAdmin = true; 
-                document.getElementById('adminBadge').style.display = 'block'; 
-                document.getElementById('adminNavBtn').style.display = 'block'; 
-                document.getElementById('logoutNavBtn').style.display = 'block'; 
-                document.getElementById('loginNavBtn').style.display = 'none'; 
-                document.getElementById('loginPass').value = ''; 
-                switchView('admin'); 
-            } else { 
-                alert('Invalid administration credentials.'); 
-            } 
-        } 
-
-        function handleLogout() { 
-            isAdmin = false; 
-            document.getElementById('adminBadge').style.display = 'none'; 
-            document.getElementById('adminNavBtn').style.display = 'none'; 
-            document.getElementById('logoutNavBtn').style.display = 'none'; 
-            document.getElementById('loginNavBtn').style.display = 'block'; 
-            switchView('market'); 
-        } 
-
-        function saveAdminSettings() { 
-            adminSettings.email = document.getElementById('adminConfigEmail').value; 
-            localStorage.setItem('ba_settings', JSON.stringify(adminSettings)); 
-            alert('System settings synchronized.'); 
-        } 
-
-        function renderMarketCategories() { 
-            var container = document.getElementById('marketCategories'); 
-            if(!container) return; 
-            var html = '<button class="cat-pill ' + (currentCategoryFilter === 'All' ? 'active' : '') + '" onclick="filterCategory(\'All\')">All Products</button>'; 
-            for (var i = 0; i < categories.length; i++) { 
-                html += '<button class="cat-pill ' + (currentCategoryFilter === categories[i] ? 'active' : '') + '" onclick="filterCategory(\'' + categories[i] + '\')">' + categories[i] + '</button>'; 
-            } 
-            container.innerHTML = html; 
-        } 
-
-        function filterCategory(cat) { 
-            currentCategoryFilter = cat; 
-            renderMarketCategories(); 
-            renderMarketProducts(); 
-        } 
-
-        function populateAdminDropdown() { 
-            var s = document.getElementById('newItemCategory'); 
-            if(s) s.innerHTML = categories.map(function(c) { return '<option value="' + c + '">' + c + '</option>'; }).join(''); 
-        } 
-
-        function addCategory() { 
-            var input = document.getElementById('newCatName'); 
-            if(!input || !input.value.trim()) return alert('Fill fields.'); 
-            var newCat = input.value.trim(); 
-            if(categories.indexOf(newCat) === -1) { 
-                categories.push(newCat); 
-                localStorage.setItem('ba_categories', JSON.stringify(categories)); 
-            } 
-            input.value = ''; 
-            alert('Category injected.'); 
-            populateAdminDropdown(); 
-            renderMarketCategories(); 
-            renderAdminManagementLists(); 
-        } 
-
-        function removeCategory(catName) { 
-            if(confirm('Purge category: ' + catName + '?')) { 
-                categories = categories.filter(function(c) { return c !== catName; }); 
-                localStorage.setItem('ba_categories', JSON.stringify(categories)); 
-                if(currentCategoryFilter === catName) currentCategoryFilter = 'All'; 
-                populateAdminDropdown(); 
-                renderMarketCategories(); 
-                renderMarketProducts(); 
-                renderAdminManagementLists(); 
-            } 
+    function switchView(viewId) { 
+        var sections = document.querySelectorAll('.view-section');
+        for (var i = 0; i < sections.length; i++) {
+            sections[i].classList.remove('active');
         }
+        
+        var targetSection = document.getElementById('view-' + viewId);
+        if (targetSection) {
+            targetSection.classList.add('active');
+        }
+        
+        var tabs = document.querySelectorAll('.nav-menus .nav-btn');
+        tabs.forEach(tab => tab.classList.remove('active-tab'));
+        var activeTab = document.getElementById('btn-' + viewId);
+        if (activeTab) activeTab.classList.add('active-tab');
+        
+        if (viewId === 'market') {
+            renderMarketCategories();
+            renderMarketProducts();
+        }
+        if (viewId === 'cart') renderCart();
+        if (viewId === 'suggestions') renderTickets();
+        if (viewId === 'admin') {
+            populateAdminDropdown();
+            renderAdminManagementLists();
+        }
+    }
 
-        function triggerAIEngine() { 
-            var keyword = document.getElementById('newItemName').value.trim(); 
-            if(!keyword) return alert('Please input an item presentation name first so the AI can parse semantic design concepts.'); 
-            var cleanTerm = encodeURIComponent(keyword.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, '')); 
-            var simulatedAIUrl = 'https://unsplash.com'; 
-            if(cleanTerm.length > 0) { 
-                simulatedAIUrl = 'https://unsplash.com?' + cleanTerm + ',' + Date.now(); 
-            } 
-            document.getElementById('newItemImageUrl').value = simulatedAIUrl; 
-            alert('AI Media Generation Sequence Finalized. Semantic catalog nodes parsed for concept: "' + keyword + '".'); 
-        } 
+    function handleLogin() {
+        var pass = document.getElementById('loginPass').value;
+        if (pass === 'buyanything123') {
+            isAdmin = true;
+            document.getElementById('adminBadge').style.display = 'block';
+            document.getElementById('adminNavBtn').style.display = 'block';
+            document.getElementById('logoutNavBtn').style.display = 'block';
+            document.getElementById('loginNavBtn').style.display = 'none';
+            document.getElementById('loginPass').value = '';
+            switchView('admin');
+        } else {
+            alert('Invalid operational gate credentials.');
+        }
+    }
 
-        function addCatalogItem() { 
-            var n = document.getElementById('newItemName').value.trim(); 
-            var c = document.getElementById('newItemCategory').value; 
-            var p = parseFloat(document.getElementById('newItemPrice').value); 
-            var img = document.getElementById('newItemImageUrl').value.trim(); 
-            if(!n || !c || isNaN(p)) return alert('Provide details.'); 
-            products.push({ id: Date.now(), name: n, category: c, price: p, image: img }); 
+    function handleLogout() {
+        isAdmin = false;
+        document.getElementById('adminBadge').style.display = 'none';
+        document.getElementById('adminNavBtn').style.display = 'none';
+        document.getElementById('logoutNavBtn').style.display = 'none';
+        document.getElementById('loginNavBtn').style.display = 'block';
+        switchView('market');
+    }
+
+    function saveAdminSettings() {
+        adminSettings.email = document.getElementById('adminConfigEmail').value;
+        localStorage.setItem('ba_settings', JSON.stringify(adminSettings));
+        alert('System target profile matrix synchronized.');
+    }
+
+    function renderMarketCategories() {
+        var container = document.getElementById('marketCategories');
+        if (!container) return;
+        var html = '<button class="cat-pill ' + (currentCategoryFilter === 'All' ? 'active' : '') + '" onclick="filterCategory(\'All\')">All Collection Lines</button>';
+        for (var i = 0; i < categories.length; i++) {
+            html += '<button class="cat-pill ' + (currentCategoryFilter === categories[i] ? 'active' : '') + '" onclick="filterCategory(\'' + categories[i] + '\')">' + categories[i] + '</button>';
+        }
+        container.innerHTML = html;
+    }
+
+    function filterCategory(cat) {
+        currentCategoryFilter = cat;
+        renderMarketCategories();
+        renderMarketProducts();
+    }
+
+    function populateAdminDropdown() {
+        var dropdown = document.getElementById('newItemCategory');
+        if (dropdown) {
+            dropdown.innerHTML = categories.map(function(c) {
+                return '<option value="' + c + '">' + c + '</option>';
+            }).join('');
+        }
+    }
+
+    function addCategory() {
+        var input = document.getElementById('newCatName');
+        if (!input || !input.value.trim()) return alert('Please enter a valid node label description.');
+        var newCat = input.value.trim();
+        if (categories.indexOf(newCat) === -1) {
+            categories.push(newCat);
+            localStorage.setItem('ba_categories', JSON.stringify(categories));
+        }
+        input.value = '';
+        alert('Category cluster node structural layout added.');
+        populateAdminDropdown();
+        renderMarketCategories();
+        renderAdminManagementLists();
+    }
+
+    function removeCategory(catName) {
+        if (confirm('Purge structural group collection: "' + catName + '" from local schema arrays?')) {
+            categories = categories.filter(function(c) { return c !== catName; });
+            localStorage.setItem('ba_categories', JSON.stringify(categories));
+            if (currentCategoryFilter === catName) currentCategoryFilter = 'All';
+            populateAdminDropdown();
+            renderMarketCategories();
+            renderMarketProducts();
+            renderAdminManagementLists();
+        }
+    }
+
+    function triggerAIEngine() {
+        var keyword = document.getElementById('newItemName').value.trim();
+        if (!keyword) return alert('Please input an item presentation name first so the semantic media model can parse contextual concepts.');
+        var cleanTerm = encodeURIComponent(keyword.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, ''));
+        var generatedSourceUrl = 'https://unsplash.com'; 
+        if (cleanTerm.length > 0) {
+            generatedSourceUrl = 'https://unsplash.com?' + cleanTerm;
+        }
+        document.getElementById('newItemImageUrl').value = generatedSourceUrl;
+        alert('AI Media Generation Sequence Finalized.\n\nParsed design node for: "' + keyword + '".');
+    }
+
+    function addCatalogItem() {
+        var n = document.getElementById('newItemName').value.trim();
+        var c = document.getElementById('newItemCategory').value;
+        var p = parseFloat(document.getElementById('newItemPrice').value);
+        var img = document.getElementById('newItemImageUrl').value.trim();
+        if (!n || !c || isNaN(p)) return alert('Provide full item properties to register asset.');
+        products.push({ id: Date.now(), name: n, category: c, price: p, image: img });
         localStorage.setItem('ba_products', JSON.stringify(products));
         document.getElementById('newItemName').value = '';
         document.getElementById('newItemPrice').value = '';
         document.getElementById('newItemImageUrl').value = '';
-        alert('Asset published.');
+        alert('New luxury asset registered to catalog showcase node.');
         renderMarketProducts();
         renderAdminManagementLists();
     }
 
     function removeCatalogItem(id) {
-        if (confirm('Purge asset?')) {
+        if (confirm('Completely erase this item asset token from showcase schemas?')) {
             products = products.filter(function(p) { return p.id !== id; });
             localStorage.setItem('ba_products', JSON.stringify(products));
             renderMarketProducts();
@@ -742,141 +660,167 @@
     function renderAdminManagementLists() {
         var catList = document.getElementById('adminCategoryList');
         var prodList = document.getElementById('adminProductList');
-        if (catList) catList.innerHTML = categories.length === 0 ? '<p>None</p>' : categories.map(function(c) { return '<div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid var(--border-line);"><span>' + c + '</span><button onclick="removeCategory(\'' + c + '\')" style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:700;">Delete</button></div>'; }).join('');
-        if (prodList) prodList.innerHTML = products.length === 0 ? '<p>None</p>' : products.map(function(p) { return '<div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid var(--border-line);"><span>' + p.name + '</span><button onclick="removeCatalogItem(' + p.id + ')" style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:700;">Delete</button></div>'; }).join('');
-    }
-
-    function renderMarketProducts() {
-        var container = document.getElementById('marketProducts');
-        if (!container) return;
-        var visibleCategories = currentCategoryFilter === 'All' ? categories : [currentCategoryFilter];
-        var html = '';
-        var count = 0;
-        for (var i = 0; i < visibleCategories.length; i++) {
-            var cat = visibleCategories[i];
-            var f = products.filter(function(p) { return p.category === cat; });
-            if (f.length > 0) {
-                count += f.length;
-                html += '<div style="grid-column:1/-1; margin:25px 0 10px 0; border-bottom:1px solid var(--border-line);"><h2 style="color:white;">' + cat + '</h2></div>';
-                for (var j = 0; j < f.length; j++) {
-                    var imgHtml = f[j].image ? '<img src="' + f[j].image + '" class="product-img">' : '<div class="product-placeholder">📦 <span>No Image</span></div>';
-                    html += '<div class="product-card"><div class="product-img-wrapper">' + imgHtml + '</div><div class="product-info"><div><div class="cat-tag">' + f[j].category + '</div><h4>' + f[j].name + '</h4></div><div class="product-footer"><div class="price">$' + f[j].price.toFixed(2) + '</div><button class="btn-action" onclick="addToCart(' + f[j].id + ')">Add to Cart</button></div></div></div>';
-                }
-            }
+        if (catList) {
+            catList.innerHTML = categories.length === 0 ? '<p class="empty-state">No categories defined.</p>' : categories.map(function(c) {
+                return '<div class="list-management-row"><span>' + c + '</span><button class="btn-danger" onclick="removeCategory(\'' + c + '\')">Purge</button></div>';
+            }).join('');
         }
-        container.innerHTML = count === 0 ? '<div class="empty-state"><h3>Catalog Empty</h3></div>' : html;
-    }
-
-    function addToCart(id) {
-        var p = products.find(function(x) { return x.id === id; });
-        if (p) {
-            cart.push(p);
-            updateCartCounter();
+        if (prodList) {
+            prodList.innerHTML = products.length === 0 ? '<p class="empty-state">No product assets present.</p>' : products.map(function(p) {
+                return '<div class="list-management-row"><span>' + p.name + '</span><button class="btn-danger" onclick="removeCatalogItem(' + p.id + ')">Delete</button></div>';
+            }).join('');
         }
     }
+    function renderMarketProducts() { 
+        var container = document.getElementById('marketProducts'); 
+        if(!container) return; 
+        var visibleCategories = currentCategoryFilter === 'All' ? categories : [currentCategoryFilter]; 
+        var html = ''; 
+        var totalCount = 0; 
+        
+        for (var i = 0; i < visibleCategories.length; i++) { 
+            var cat = visibleCategories[i]; 
+            var filtered = products.filter(function(p) { return p.category === cat; }); 
+            if (filtered.length > 0) { 
+                totalCount += filtered.length; 
+                html += '<div class="category-header-title">' + cat + '</div>'; 
+                for (var j = 0; j < filtered.length; j++) { 
+                    var imgHtml = filtered[j].image ? '<img src="' + filtered[j].image + '" class="product-img" onerror="this.src=\'https://unsplash.com\'">' : '<div class="product-placeholder">📦 <span>No Presentation Asset</span></div>'; 
+                    html += '<div class="product-card"><div class="product-img-wrapper">' + imgHtml + '</div><div class="product-info"><div><div class="cat-tag">' + filtered[j].category + '</div><h4>' + filtered[j].name + '</h4></div><div class="product-footer"><div class="price">$' + filtered[j].price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '</div><button class="btn-action" onclick="addToCart(' + filtered[j].id + ')" style="width:auto; padding: 10px 20px; font-size:13px;">Add to Cart</button></div></div></div>'; 
+                } 
+            } 
+        } 
+        container.innerHTML = totalCount === 0 ? '<div class="empty-state"><h3>Collection Catalog Vacant</h3><p>Active parameters found no catalog items. Access the Auth Terminal to add custom premium assets.</p></div>' : html; 
+    } 
 
-    function updateCartCounter() {
-        var c = document.getElementById('cartCount');
-        if (c) c.innerText = cart.length;
-    }
+    function addToCart(id) { 
+        var productItem = products.find(function(x) { return x.id === id; }); 
+        if(productItem) { 
+            cart.push(productItem); 
+            updateCartCounter(); 
+            alert('Asset added to pipeline.');
+        } 
+    } 
 
-    function renderCart() {
-        var container = document.getElementById('cartItemsList');
-        var totalSpan = document.getElementById('cartTotal');
-        if (!container || !totalSpan) return;
-        if (cart.length === 0) {
-            container.innerHTML = '<p>Empty.</p>';
-            totalSpan.innerText = '0.00';
-            return;
-        }
-        var total = 0;
-        var html = '';
-        for (var i = 0; i < cart.length; i++) {
-            total += cart[i].price;
-            html += '<div class="cart-item"><div><strong>' + cart[i].name + '</strong></div><div><span>$' + cart[i].price.toFixed(2) + '</span><button onclick="removeFromCart(' + i + ')" style="color:#ef4444; border:none; background:none; margin-left:15px; cursor:pointer;">Remove</button></div></div>';
-        }
-        container.innerHTML = html;
-        totalSpan.innerText = total.toFixed(2);
-    }
+    function updateCartCounter() { 
+        var counterSpan = document.getElementById('cartCount'); 
+        if(counterSpan) counterSpan.innerText = cart.length; 
+    } 
 
-    function removeFromCart(index) {
-        cart.splice(index, 1);
-        updateCartCounter();
-        renderCart();
-    }
+    function renderCart() { 
+        var container = document.getElementById('cartItemsList'); 
+        var totalSpan = document.getElementById('cartTotal'); 
+        if(!container || !totalSpan) return; 
+        
+        if(cart.length === 0) { 
+            container.innerHTML = '<div class="empty-state" style="padding:40px 0;"><h3>Pipeline Empty</h3><p>No procurement requests staged.</p></div>'; 
+            totalSpan.innerText = '$0.00'; 
+            return; 
+        } 
+        var sum = 0; 
+        var html = ''; 
+        for (var i = 0; i < cart.length; i++) { 
+            sum += cart[i].price; 
+            html += '<div class="cart-item"><div><span class="cat-tag" style="font-size:9px; padding:2px 6px; margin-bottom:4px; display:inline-block;">' + cart[i].category + '</span><h4 style="font-size:16px; color:white;">' + cart[i].name + '</h4></div><div style="display:flex; align-items:center; gap:20px;"><strong style="font-size:18px;">$' + cart[i].price.toLocaleString('en-US', {minimumFractionDigits: 2}) + '</strong><button class="btn-danger" onclick="removeFromCart(' + i + ')">Remove</button></div></div>'; 
+        } 
+        container.innerHTML = html; 
+        totalSpan.innerText = '$' + sum.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); 
+    } 
 
-    function submitOrder() {
-        var n = document.getElementById('orderName').value.trim();
-        var a = document.getElementById('orderAddress').value.trim();
-        if (!n || !a || cart.length === 0) return alert('Provide specifications.');
-        var arr = [];
-        var totalVal = 0;
-        for (var i = 0; i < cart.length; i++) {
-            arr.push('- ' + cart[i].name + ' ($' + cart[i].price.toFixed(2) + ')');
-            totalVal += cart[i].price;
-        }
-        window.location.href = 'mailto:' + adminSettings.email + '?subject=Order&body=' + encodeURIComponent('Order:\nName: ' + n + '\nAddress: ' + a + '\n\nItems:\n' + arr.join('\n') + '\n\nTotal: $' + totalVal.toFixed(2));
-        cart = [];
-        updateCartCounter();
-        switchView('market');
-        alert('Order formatted.');
-    }
+    function removeFromCart(index) { 
+        cart.splice(index, 1); 
+        updateCartCounter(); 
+        renderCart(); 
+    } 
 
-    function createTicket() {
-        var t = document.getElementById('suggestName').value.trim();
-        var m = document.getElementById('suggestDesc').value.trim();
-        if (!t || !m) return alert('Provide full tracking values.');
-        tickets.push({ id: Date.now(), title: t, message: m, replies: [] });
-        localStorage.setItem('ba_tickets', JSON.stringify(tickets));
-        document.getElementById('suggestName').value = '';
-        document.getElementById('suggestDesc').value = '';
-        alert('Ticket created.');
-        renderTickets();
-    }
+    function submitOrder() { 
+        var name = document.getElementById('orderName').value.trim(); 
+        var address = document.getElementById('orderAddress').value.trim(); 
+        if(!name || !address || cart.length === 0) return alert('Staged data lists or parameters invalid.'); 
+        
+        var itemsList = []; 
+        var totalValuePrice = 0; 
+        for (var i = 0; i < cart.length; i++) { 
+            itemsList.push('- ' + cart[i].name + ' [Class: ' + cart[i].category + '] ($' + cart[i].price.toFixed(2) + ')'); 
+            totalValuePrice += cart[i].price; 
+        } 
+        
+        window.location.href = 'mailto:' + adminSettings.email + '?subject=Premium Order Stream Request&body=' + encodeURIComponent('Premium Routing Summary:\nName: ' + name + '\nDestination Path: ' + address + '\n\n Staged Items Block:\n' + itemsList.join('\n') + '\n\nConsolidated Evaluation: $' + totalValuePrice.toFixed(2)); 
+        
+        cart = []; 
+        updateCartCounter(); 
+        document.getElementById('orderName').value = '';
+        document.getElementById('orderAddress').value = '';
+        switchView('market'); 
+        alert('Mailing data packet payload parsed and initialized.'); 
+    } 
 
-    function renderTickets() {
-        var userContainer = document.getElementById('userTicketMessage');
-        var adminContainer = document.getElementById('adminChatDashboard');
-        if (!userContainer || !adminContainer) return;
-        if (!isAdmin) {
-            userContainer.style.display = 'block';
-            adminContainer.style.display = 'none';
-            return;
-        }
-        userContainer.style.display = 'none';
-        adminContainer.style.display = 'block';
-        if (tickets.length === 0) {
-            adminContainer.innerHTML = '<p>No ticket history nodes discovered.</p>';
-            return;
-        }
-        adminContainer.innerHTML = tickets.map(function(t) {
-            var chatHistoryHtml = '';
-            if (t.replies && t.replies.length > 0) {
-                chatHistoryHtml = t.replies.map(function(r) {
-                    return '<div class="admin-reply-box"><strong>' + r.sender + '</strong> • <small>' + r.time + '</small><br>' + r.text + '</div>';
-                }).join('');
-            }
-            var chatActionForm = '<div style="margin-top:15px; display:flex; gap:10px;"><input type="text" id="chat-reply-input-' + t.id + '" placeholder="Type message..." style="flex:1; padding:10px; background:var(--bg-canvas); border:1px solid var(--border-line); color:white; border-radius:6px;"><button class="btn-action" onclick="submitChatReply(' + t.id + ')" style="width:auto; padding:10px 20px; border-radius:6px;">Send Message</button></div>';
-            return '<div class="ticket-card pending">' +
-                   '<div class="ticket-header"><span>Core Hub Stream Code: #' + t.id + '</span><span>LIVE ADMIN CHAT ARRAY SYNCED</span></div>' +
-                   '<h3>' + t.title + '</h3>' +
-                   '<p style="margin-top: 5px; color: var(--text-muted);">' + t.message + '</p>' +
-                   chatHistoryHtml + chatActionForm +
-                   '</div>';
-        }).join('');
-    }
+    function createTicket() { 
+        var titleText = document.getElementById('suggestName').value.trim(); 
+        var messageText = document.getElementById('suggestDesc').value.trim(); 
+        if(!titleText || !messageText) return alert('Provide full tracking metric descriptions.'); 
+        
+        tickets.push({ id: Date.now(), title: titleText, message: messageText, replies: [] }); 
+        localStorage.setItem('ba_tickets', JSON.stringify(tickets)); 
+        
+        document.getElementById('suggestName').value = ''; 
+        document.getElementById('suggestDesc').value = ''; 
+        alert('Dynamic simulation feedback node launched.'); 
+        renderTickets(); 
+    } 
 
-    function submitChatReply(id) {
-        var val = document.getElementById('chat-reply-input-' + id).value.trim();
-        if (!val) return;
-        var target = tickets.find(function(t) { return t.id === id; });
-        if (target) {
-            if (!target.replies) target.replies = [];
-            var timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            target.replies.push({ sender: 'AUTHORIZED_ADMIN_NODE', time: timestamp, text: val });
-            localStorage.setItem('ba_tickets', JSON.stringify(tickets));
-            renderTickets();
-        }
-    }
+    function renderTickets() { 
+        var userContainer = document.getElementById('userTicketMessage'); 
+        var adminContainer = document.getElementById('adminChatDashboard'); 
+        if(!userContainer || !adminContainer) return; 
+        
+        if (!isAdmin) { 
+            userContainer.style.display = 'block'; 
+            adminContainer.style.display = 'none'; 
+            return; 
+        } 
+        
+        userContainer.style.display = 'none'; 
+        adminContainer.style.display = 'block'; 
+        
+        if(tickets.length === 0) { 
+            adminContainer.innerHTML = '<p class="empty-state">No dynamic diagnostic history threads logged.</p>'; 
+            return; 
+        } 
+        
+        adminContainer.innerHTML = tickets.map(function(t) { 
+            var chatRepliesContent = ''; 
+            if(t.replies && t.replies.length > 0) { 
+                chatRepliesContent = t.replies.map(function(r) { 
+                    return '<div class="admin-reply-box"><strong>' + r.sender + '</strong> • <small>' + r.time + '</small><br>' + r.text + '</div>'; 
+                }).join(''); 
+            } 
+            var chatFormMarkup = '<div style="margin-top:16px; display:flex; gap:10px;"><input type="text" id="chat-reply-input-' + t.id + '" placeholder="Transmit secure network broadcast text..." style="flex:1; padding:12px; background:rgba(6,8,15,0.5); border:1px solid var(--border-line); color:white; border-radius:8px;"><button class="btn-action" onclick="submitChatReply(' + t.id + ')" style="width:auto; padding:0 24px; border-radius:8px; background:var(--primary); color:#06080f;">Send Node</button></div>'; 
+            
+            return '<div class="ticket-card pending">' + 
+                   '<div class="ticket-header"><span>Core Hub Stream Code: #' + t.id + '</span><span style="color:#f59e0b;">LIVE CHAT MATRIX SYNCED</span></div>' + 
+                   '<h3 style="color:white; margin-bottom:6px;">' + t.title + '</h3>' + 
+                   '<p style="color:var(--text-muted); font-size:14px; line-height:1.5;">' + t.message + '</p>' + 
+                   chatRepliesContent + chatFormMarkup + 
+                   '</div>'; 
+        }).join(''); 
+    } 
+
+    function submitChatReply(id) { 
+        var replyInputField = document.getElementById('chat-reply-input-' + id);
+        var textValue = replyInputField.value.trim(); 
+        if(!textValue) return; 
+        
+        var matchToken = tickets.find(function(t) { return t.id === id; }); 
+        if(matchToken) { 
+            if(!matchToken.replies) matchToken.replies = []; 
+            var currentTimeStamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}); 
+            
+            matchToken.replies.push({ sender: 'AUTHORIZED_SYS_OPERATOR', time: currentTimeStamp, text: textValue }); 
+            localStorage.setItem('ba_tickets', JSON.stringify(tickets)); 
+            replyInputField.value = '';
+            renderTickets(); 
+        } 
+    } 
 
     window.onload = initApp;
