@@ -136,31 +136,33 @@
 </head>
 <body>
 <header>
-    <div class="navbar">
-        <div class="brand" onclick="switchView('market')">Buy<span>Anything</span></div>
-        <div class="admin-indicator" id="adminBadge">Authorized Deck</div>
-        <nav class="nav-menus">
-            <button class="nav-btn" onclick="switchView('market')">Store</button>
-            <button class="nav-btn" onclick="switchView('suggestions')">Tickets</button>
-            <button class="nav-btn" onclick="switchView('cart')">Cart (<span id="cartCount">0</span>)</button>
-            <button class="nav-btn" id="loginNavBtn" onclick="switchView('login')">Login</button>
-            <button class="nav-btn" id="adminNavBtn" onclick="switchView('admin')" style="display:none; color: var(--primary); border-color: rgba(56,189,248,0.2);">Deck</button>
-            <button class="nav-btn" id="logoutNavBtn" onclick="handleLogout()" style="display:none;">Exit</button>
-        </nav>
-    </div>
-</header>
-<main class="main-container">
-    <section id="view-market" class="view-section active">
-        <div class="market-layout">
+<div class="navbar"> 
+    <div class="brand" onclick="switchView('market')">Buy<span>Anything</span></div> 
+    <div class="admin-indicator" id="adminBadge">Authorized Deck</div> 
+    <nav class="nav-menus"> 
+        <button class="nav-btn" onclick="switchView('market')">Store</button> 
+        <button class="nav-btn" onclick="switchView('suggestions')">Tickets</button> 
+        <button class="nav-btn" onclick="switchView('cart')">Cart (<span id="cartCount">0</span>)</button> 
+        <button class="nav-btn" id="loginNavBtn" onclick="switchView('login')">Login</button> 
+        <button class="nav-btn" id="adminNavBtn" onclick="switchView('admin')" style="display:none; color: var(--primary); border-color: rgba(56,189,248,0.2);">Deck</button> 
+        <button class="nav-btn" id="logoutNavBtn" onclick="handleLogout()" style="display:none;">Exit</button> 
+    </nav> 
+</div> 
+</header> 
+
+<main class="main-container"> 
+    <section id="view-market" class="view-section active"> 
+        <div class="market-layout"> 
             <aside class="sidebar">
                 <h3>Collections</h3>
                 <div class="category-list" id="marketCategories"></div>
-            </aside>
+            </aside> 
             <div class="products-area">
                 <div class="product-grid" id="marketProducts"></div>
-            </div>
-        </div>
-    </section>
+            </div> 
+        </div> 
+    </section> 
+
     <section id="view-cart" class="view-section"> 
         <div style="max-width: 800px; margin: 0 auto;"> 
             <h2 style="margin-bottom: 25px;">Shopping Checkout Pipeline</h2> 
@@ -176,6 +178,29 @@
         </div> 
     </section> 
 
+    <section id="view-suggestions" class="view-section"> 
+        <div style="max-width: 950px; margin: 0 auto;"> 
+            <div class="form-box" style="margin-bottom: 40px; max-width: 100%;"> 
+                <h2>Deploy Concept Simulation Ticket</h2> 
+                <div class="form-group"><label>Proposed Asset Name</label><input type="text" id="suggestName" placeholder="What asset line do we need?"></div> 
+                <div class="form-group"><label>Technical Description</label><textarea id="suggestDesc" rows="4" placeholder="Explain requirements..."></textarea></div> 
+                <button class="btn-action" onclick="createTicket()">Launch Feedback Node</button> 
+            </div> 
+            <div id="userTicketMessage" style="display:block; text-align:center; padding:40px; border:1px dashed var(--border-line); background:var(--bg-surface); border-radius:12px;"> 
+                <h3 style="color:white; margin-bottom:10px;">Ticket Successfully Initialized</h3> 
+                <p style="color:var(--text-muted); font-size:15px; max-width:500px; margin:0 auto;">For optimal security metrics, the full dynamic tracking history board and operational admin-to-admin chat loop arrays are restricted exclusively to authorized administrative nodes.</p> 
+            </div> 
+            <div id="adminChatDashboard" style="display:none;"></div> 
+        </div> 
+    </section> 
+
+    <section id="view-login" class="view-section"> 
+        <div class="form-box"> 
+            <h2>Admin Identity Auth</h2> 
+            <div class="form-group"><label>Pass Key Validation</label><input type="password" id="loginPass" placeholder="••••••••"></div> 
+            <button class="btn-action" onclick="handleLogin()">Unlock Control Terminal</button> 
+        </div> 
+    </section>
     <section id="view-suggestions" class="view-section"> 
         <div style="max-width: 950px; margin: 0 auto;"> 
             <div class="form-box" style="margin-bottom: 40px; max-width: 100%;"> 
