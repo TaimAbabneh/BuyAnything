@@ -401,7 +401,7 @@
         var catList = document.getElementById('adminCategoryList'); 
         var prodList = document.getElementById('adminProductList'); 
         if(catList) catList.innerHTML = categories.length === 0 ? '<p>None</p>' : categories.map(function(c) { return '<div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid var(--border-line);"><span>' + c + '</span><button onclick="removeCategory(\'' + c + '\')" style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:700;">Delete</button></div>'; }).join(''); 
-        if(prodList) prodList.innerHTML = products.length === 0 ? 'None' : products.map(function(p) { return '' + p.name + 'Delete'; }).join('');
+           if(prodList) prodList.innerHTML = products.length === 0 ? '<p>None</p>' : products.map(function(p) { return '<div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid var(--border-line);"><span>' + p.name + '</span><button onclick="removeCatalogItem(' + p.id + ')" style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:700;">Delete</button></div>'; }).join('');
     }
 
     function renderMarketProducts() {
@@ -415,14 +415,14 @@
             var f = products.filter(function(p) { return p.category === cat; });
             if (f.length > 0) {
                 count += f.length;
-                html += '' + cat + '';
+                html += '<div style="grid-column:1/-1; margin:25px 0 10px 0; border-bottom:1px solid var(--border-line);"><h2 style="color:white;">' + cat + '</h2></div>';
                 for (var j = 0; j < f.length; j++) {
-                    var imgHtml = f[j].image ? '' : '📦 No Image';
-                    html += '' + imgHtml + '' + f[j].category + '' + f[j].name + '$' + f[j].price.toFixed(2) + 'Add to Cart';
+                    var imgHtml = f[j].image ? '<img src="' + f[j].image + '" class="product-img">' : '<div class="product-placeholder">📦 <span>No Image</span></div>';
+                    html += '<div class="product-card"><div class="product-img-wrapper">' + imgHtml + '</div><div class="product-info"><div><div class="cat-tag">' + f[j].category + '</div><h4>' + f[j].name + '</h4></div><div class="product-footer"><div class="price">$' + f[j].price.toFixed(2) + '</div><button class="btn-action" onclick="addToCart(' + f[j].id + ')">Add to Cart</button></div></div></div>';
                 }
             }
         }
-        container.innerHTML = count === 0 ? 'Catalog Empty' : html;
+        container.innerHTML = count === 0 ? '<div class="empty-state"><h3>Catalog Empty</h3></div>' : html;
     }
 
     function addToCart(id) {
@@ -443,7 +443,7 @@
         var totalSpan = document.getElementById('cartTotal');
         if(!container || !totalSpan) return;
         if(cart.length === 0) {
-            container.innerHTML = 'Empty.';
+            container.innerHTML = '<p>Empty.</p>';
             totalSpan.innerText = '0.00';
             return;
         }
@@ -451,7 +451,7 @@
         var html = '';
         for (var i = 0; i < cart.length; i++) {
             total += cart[i].price;
-            html += '' + cart[i].name + '$' + cart[i].price.toFixed(2) + 'Remove';
+            html += '<div class="cart-item"><div><strong>' + cart[i].name + '</strong></div><div><span>$' + cart[i].price.toFixed(2) + '</span><button onclick="removeFromCart(' + i + ')" style="color:#ef4444; border:none; background:none; margin-left:15px; cursor:pointer;">Remove</button></div></div>';
         }
         container.innerHTML = html;
         totalSpan.innerText = total.toFixed(2);
@@ -504,23 +504,23 @@
         userContainer.style.display = 'none';
         adminContainer.style.display = 'block';
         if(tickets.length === 0) {
-            adminContainer.innerHTML = 'No ticket history nodes discovered.';
+            adminContainer.innerHTML = '<p>No ticket history nodes discovered.</p>';
             return;
         }
         adminContainer.innerHTML = tickets.map(function(t) {
             var chatHistoryHtml = '';
             if(t.replies && t.replies.length > 0) {
                 chatHistoryHtml = t.replies.map(function(r) {
-                    return '' + r.sender + ' • ' + r.time + '' + r.text + '';
+                    return '<div class="admin-reply-box"><strong>' + r.sender + '</strong> • <small>' + r.time + '</small><br>' + r.text + '</div>';
                 }).join('');
             }
-            var chatActionForm = 'Send Message';
-            return '' +
-                   'Core Hub Stream Code: #' + t.id + 'LIVE ADMIN CHAT ARRAY SYNCED' +
-                   '' + t.title + '' +
-                   '' + t.message + '' +
+            var chatActionForm = '<div style="margin-top:15px; display:flex; gap:10px;"><input type="text" id="chat-reply-input-' + t.id + '" placeholder="Type message..." style="flex:1; padding:10px; background:var(--bg-canvas); border:1px solid var(--border-line); color:white; border-radius:6px;"><button class="btn-action" onclick="submitChatReply(' + t.id + ')" style="width:auto; padding:10px 20px; border-radius:6px;">Send Message</button></div>';
+            return '<div class="ticket-card pending">' +
+                   '<div class="ticket-header"><span>Core Hub Stream Code: #' + t.id + '</span><span>LIVE ADMIN CHAT ARRAY SYNCED</span></div>' +
+                   '<h3>' + t.title + '</h3>' +
+                   '<p style="margin-top: 5px; color: var(--text-muted);">' + t.message + '</p>' +
                    chatHistoryHtml + chatActionForm +
-                   '';
+                   '</div>';
         }).join('');
     }
 
