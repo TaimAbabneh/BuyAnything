@@ -154,16 +154,13 @@
                     <div class="form-box" style="margin: 0 0 35px 0; max-width: 100%;">
                         <h3>Active Catalog Assets</h3>
                         <div id="adminProductList" style="margin-top:15px; max-height:200px; overflow-y:auto; padding-right:5px;"></div>
+                        <div class="form-group">
+                            <label>Asset Image Presentation URI Link</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="newItemImageUrl" placeholder="https://unsplash.com...">
+                                <button class="btn-action" onclick="triggerAIEngine()" style="width: auto; padding: 0 20px; white-space: nowrap; background: var(--primary); color: #090b11;">Generate AI Image</button>
+                            </div>
                     </div>
-                    <div class="form-box" style="margin: 0; max-width: 100%;">
-                        <h3>Compile New Catalog Asset</h3>
-                        <div class="form-group" style="margin-top: 15px;"><label>Asset Name</label><input type="text" id="newItemName" placeholder="Product name..."></div>
-                        <div class="form-group"><label>Category Placement</label><select id="newItemCategory"></select></div>
-                        <div class="form-group"><label>Price Point ($)</label><input type="number" id="newItemPrice" step="0.01" placeholder="0.00"></div>
-                        <div class="form-group"><label>Asset Image URL</label><input type="text" id="newItemImageUrl" placeholder="https://unsplash.com..."></div>
-                        <button class="btn-action" onclick="addCatalogItem()">Commit & Publish Asset</button>
-                    </div>
-                </div>
             </div>
         </section>
     </main>
