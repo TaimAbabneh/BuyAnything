@@ -1,6 +1,6 @@
 // Local Database Setup State Variables Initialization
 let storeData = JSON.parse(localStorage.getItem('buyanything_premium_db')) || {
-    adminTargetEmail: "your-email@school.com", // Set default target route address here
+    adminTargetEmail: "your-email@school.com", 
     categories: ["All", "Snacks", "Drinks", "Supplies"],
     products: [
         { id: 101, name: "Premium Notebook", price: 4.99, category: "Supplies", img: "https://unsplash.com" },
@@ -17,19 +17,24 @@ function saveCartToStorage() { localStorage.setItem('buyanything_active_cart', J
 
 /* ================= CENTRAL DATA ROUTING HUBS ================= */
 window.addEventListener('DOMContentLoaded', () => {
-    const path = window.location.pathname;
+    const path = window.location.pathname.toLowerCase();
 
-    if (path.includes('index.html') || path === '/' || !path.includes('.html')) {
+    // Flexible path checker logic to support Render's automatic clean-url trailing-slash trims
+    const isHomePage = path === '/' || path.endsWith('index.html') || path.endsWith('index');
+    const isAdminPage = path.includes('admin');
+    const isCartPage = path.includes('cart');
+
+    if (isHomePage) {
         renderMarqueeScroller();
         renderSidebarCategories();
         renderGridInventory();
         updateCartBadgeCount();
         setupTicketModalControls();
     }
-    if (path.includes('admin.html')) {
+    if (isAdminPage) {
         setupAdminInstantGate();
     }
-    if (path.includes('cart.html')) {
+    if (isCartPage) {
         renderTerminalCartContents();
         setupCartCheckoutSystem();
     }
@@ -41,10 +46,10 @@ function renderMarqueeScroller() {
     if (!box) return;
     box.innerHTML = '';
     
-    // Duplicate arrays list so marquee scrolls endlessly following each other flawlessly
-    const doubleList = [...storeData.products, ...storeData.products, ...storeData.products];
+    // Triple array contents to map smooth looping transition overlaps cleanly
+    const multiLoopItems = [...storeData.products, ...storeData.products, ...storeData.products];
     
-    doubleList.forEach(p => {
+    multiLoopItems.forEach(p => {
         const card = document.createElement('div');
         card.className = 'marquee-card';
         card.innerHTML = `
@@ -66,7 +71,7 @@ function renderSidebarCategories() {
     storeData.categories.forEach(cat => {
         const btn = document.createElement('button');
         btn.className = `cat-link-btn ${selectedCategoryFilter === cat ? 'active' : ''}`;
-        btn.innerHTML = `<i class="fa-solid fa-chevron-right" style="font-size:0.75rem; margin-right:5px"></i> ${cat}`;
+        btn.innerHTML = `<span>${cat}</span><i class="fa-solid fa-chevron-right" style="font-size:0.75rem; opacity:0.6"></i>`;
         btn.onclick = () => {
             selectedCategoryFilter = cat;
             renderSidebarCategories();
@@ -85,9 +90,18 @@ function renderGridInventory() {
         ? storeData.products 
         : storeData.products.filter(p => p.category === selectedCategoryFilter);
 
-    viewItems.forEach(prod => {
+    if (viewItems.length === 0) {
+        grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:3rem 0;">No active stock entries in this category.</p>`;
+        return;
+    }
+
+    viewItems.forEach((prod, index) => {
         const card = document.createElement('div');
         card.className = 'product-card';
+        
+        // Staggered incremental entrance display offsets
+        card.style.animationDelay = `${index * 0.05}s`;
+        
         card.innerHTML = `
             <img class="product-img" src="${prod.img}" alt="${prod.name}" onerror="this.src='https://unsplash.com'">
             <div class="product-info">
@@ -126,11 +140,18 @@ function setupTicketModalControls() {
     const closeBtn = document.getElementById('closeTicketBtn');
     const form = document.getElementById('supportTicketForm');
 
-    // Dynamic submission route destination injection update
     if(form) form.action = `https://formsubmit.co{storeData.adminTargetEmail}`;
 
-    if(openBtn) openBtn.onclick = () => modal.style.display = 'flex';
-    if(closeBtn) closeBtn.onclick = () => modal.style.display = 'none';
+    if(openBtn) {
+        openBtn.onclick = () => {
+            modal.classList.add('open');
+        }
+    }
+    if(closeBtn) {
+        closeBtn.onclick = () => {
+            modal.classList.remove('open');
+        }
+    }
 }
 
 /* ================= INSTANT KEY-INTERCEPT ADMIN AUTHENTICATION ================= */
@@ -141,10 +162,10 @@ function setupAdminInstantGate() {
 
     if (!input) return;
 
-    // Real-time keyup interception logic requested
+    // Real-time dynamic validation check
     input.addEventListener('input', () => {
-        // Exact token string parameter checked on the fly
-        if (input.value === "buyanything 123") {
+        // Exact target string comparison asked: buyanything 123
+        if (input.value.trim() === "buyanything 123") {
             gate.style.display = 'none';
             desk.style.display = 'block';
             document.getElementById('adminAlertEmail').value = storeData.adminTargetEmail;
@@ -152,7 +173,8 @@ function setupAdminInstantGate() {
         }
     });
 
-    document.getElementById('exitControlBtn').onclick = () => window.location.href = 'index.html';
+    const exitBtn = document.getElementById('exitControlBtn');
+    if (exitBtn) exitBtn.onclick = () => window.location.href = 'index.html';
 }
 
 function renderAdminTools() {
@@ -162,9 +184,10 @@ function renderAdminTools() {
         alert("Operational Email target destination updated.");
     };
 
-    // Dropdowns dropdown lists
     const select = document.getElementById('prodCategory');
     const cList = document.getElementById('adminCategoriesList');
+    if(!select || !cList) return;
+    
     select.innerHTML = ''; cList.innerHTML = '';
     
     storeData.categories.filter(c => c !== "All").forEach(cat => {
@@ -174,8 +197,10 @@ function renderAdminTools() {
         cList.appendChild(r);
     });
 
-    // Inventory lists
-    const pList = document.getElementById('adminProductsList'); pList.innerHTML = '';
+    const pList = document.getElementById('adminProductsList'); 
+    if(!pList) return;
+    pList.innerHTML = '';
+    
     storeData.products.forEach(p => {
         const r = document.createElement('div'); r.className = 'list-item';
         r.innerHTML = `<span>${p.name} ($${p.price.toFixed(2)})</span><button class="delete-btn" onclick="dropProduct(${p.id})"><i class="fa-solid fa-trash"></i></button>`;
@@ -183,40 +208,57 @@ function renderAdminTools() {
     });
 }
 
-// Category addition listeners attachment 
-if (window.location.pathname.includes('admin.html')) {
-    document.getElementById('addCategoryForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const v = document.getElementById('newCategoryName').value.trim();
-        if(v && !storeData.categories.includes(v)) {
-            storeData.categories.push(v); saveToStorage(); renderAdminTools();
-            document.getElementById('newCategoryName').value = '';
-        }
-    });
+// Category addition submission attachment hook actions
+window.addEventListener('load', () => {
+    const path = window.location.pathname.toLowerCase();
+    if (!path.includes('admin')) return;
 
-    document.getElementById('addProductForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('prodName').value.trim();
-        const price = parseFloat(document.getElementById('prodPrice').value);
-        const category = document.getElementById('prodCategory').value;
-        let imgUrl = document.getElementById('useAIImage').checked 
-            ? `https://unsplash.com{encodeURIComponent(name)},product`
-            : (document.getElementById('prodImgUrl').value.trim() || 'https://unsplash.com');
+    const addCatForm = document.getElementById('addCategoryForm');
+    const addProdForm = document.getElementById('addProductForm');
 
-        storeData.products.push({ id: Date.now(), name, price, category, img: imgUrl });
-        saveToStorage(); renderAdminTools();
-        document.getElementById('prodName').value = ''; document.getElementById('prodPrice').value = '';
-    });
-}
+    if(addCatForm) {
+        addCatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const v = document.getElementById('newCategoryName').value.trim();
+            if(v && !storeData.categories.includes(v)) {
+                storeData.categories.push(v); saveToStorage(); renderAdminTools();
+                document.getElementById('newCategoryName').value = '';
+            }
+        });
+    }
+
+    if(addProdForm) {
+        addProdForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('prodName').value.trim();
+            const price = parseFloat(document.getElementById('prodPrice').value);
+            const category = document.getElementById('prodCategory').value;
+            let imgUrl = document.getElementById('useAIImage').checked 
+                ? `https://unsplash.com{encodeURIComponent(name)},product`
+                : (document.getElementById('prodImgUrl').value.trim() || 'https://unsplash.com');
+
+            storeData.products.push({ id: Date.now(), name, price, category, img: imgUrl });
+            saveToStorage(); 
+            renderAdminTools();
+            document.getElementById('prodName').value = ''; 
+            document.getElementById('prodPrice').value = '';
+        });
+    }
+});
 
 window.dropCategory = function(name) {
     storeData.categories = storeData.categories.filter(c => c !== name);
-    storeData.products.forEach(p => { if(p.category === name) p.category = "All"; });
-    saveToStorage(); renderAdminTools();
+    storeData.products.forEach(p => { 
+        if (p.category === name) p.category = "All"; 
+    });
+    saveToStorage(); 
+    renderAdminTools();
 };
+
 window.dropProduct = function(id) {
     storeData.products = storeData.products.filter(p => p.id !== id);
-    saveToStorage(); renderAdminTools();
+    saveToStorage(); 
+    renderAdminTools();
 };
 
 /* ================= CART TERMINAL HANDLERS ================= */
@@ -226,19 +268,49 @@ function renderTerminalCartContents() {
     if (!container) return;
     container.innerHTML = '';
 
-<div class="form-group">
-    <label for="ticketUser">Your Name</label>
-    <input type="text" id="ticketUser" placeholder="Alex Smith" required>
-</div>
+    if (globalShoppingCart.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); padding:1rem 0">Empty Cart.</p>';
+        totalLabel.textContent = "$0.00";
+        return;
+    }
 
-<div class="form-group">
-    <label for="ticketEmail">Your Contact Return Email</label>
-    <input type="email" id="ticketEmail" placeholder="alex@school.com" required>
-</div>
+    let sum = 0;
+    globalShoppingCart.forEach(i => {
+        const cost = i.product.price * i.quantity; 
+        sum += cost;
+        const r = document.createElement('div'); 
+        r.className = 'cart-item-row';
+        r.innerHTML = `<span>${i.product.name} (x${i.quantity})</span><span>$${cost.toFixed(2)}</span>`;
+        container.appendChild(r);
+    });
 
-<div class="form-group">
-    <label for="ticketMsg">Inquiry Message</label>
-    <textarea id="ticketMsg" rows="4" placeholder="How can we help you?" required></textarea>
-</div>
+    totalLabel.textContent = `$${sum.toFixed(2)}`;
+    
+    if (document.getElementById('hiddenManifest')) {
+        document.getElementById('hiddenManifest').value = globalShoppingCart.map(i => `${i.product.name} [Qty: ${i.quantity}]`).join(', ');
+        document.getElementById('hiddenTotal').value = `$${sum.toFixed(2)}`;
+    }
+}
 
-<button type="submit" class="btn">Dispatch Ticket Email</button>
+function setupCartCheckoutSystem() {
+    const form = document.getElementById('checkoutPurchaseTicketForm');
+    if (form) form.action = `https://formsubmit.co{storeData.adminTargetEmail}`;
+
+    document.getElementById('clearCartBtn').onclick = () => {
+        globalShoppingCart = []; 
+        saveCartToStorage(); 
+        renderTerminalCartContents();
+    };
+    
+    document.getElementById('proceedCheckoutBtn').onclick = () => {
+        if (globalShoppingCart.length === 0) return alert('Cart empty');
+        document.getElementById('proceedCheckoutBtn').style.display = 'none';
+        document.getElementById('checkoutFormBlock').style.display = 'block';
+    };
+    
+    if (form) {
+        form.addEventListener('submit', () => {
+            localStorage.removeItem('buyanything_active_cart');
+        });
+    }
+}
