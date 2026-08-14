@@ -1,335 +1,338 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>BuyAnything - Premium Executive Marketplace</title> 
-    <style> 
-        :root { 
-            --bg-canvas: #06080f; 
-            --bg-surface: rgba(17, 22, 40, 0.65); 
-            --bg-card: rgba(26, 33, 56, 0.5); 
-            --primary: #38bdf8; 
-            --primary-hover: #0ea5e9; 
-            --accent: #10b981; 
-            --accent-hover: #059669;
-            --text-main: #f8fafc; 
-            --text-muted: #94a3b8; 
-            --border-line: rgba(255, 255, 255, 0.07); 
-            --radius-lg: 24px; 
-            --radius-md: 16px; 
-            --radius-sm: 12px; 
-            --glass-blur: blur(16px);
-            --layer-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); 
-            --fluid-motion: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-        } 
-
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-        } 
-
-        body { 
-            background: radial-gradient(circle at 50% 0%, #131d35 0%, var(--bg-canvas) 70%);
-            color: var(--text-main); 
-            min-height: 100vh; 
-            font-size: 16px; 
-            padding-bottom: 100px; 
-            overflow-x: hidden; 
-            -webkit-font-smoothing: antialiased; 
-        } 
-
-        header { 
-            background: rgba(6, 8, 15, 0.7); 
-            backdrop-filter: var(--glass-blur); 
-            -webkit-backdrop-filter: var(--glass-blur);
-            border-bottom: 1px solid var(--border-line); 
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-        } 
-
-        .navbar { 
-            max-width: 1500px; 
-            margin: 0 auto; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 20px 40px; 
-        } 
-
-        .brand { 
-            font-size: 28px; 
-            font-weight: 800; 
-            color: white; 
-            cursor: pointer; 
-            letter-spacing: -0.75px; 
-            transition: var(--fluid-motion); 
-            display: flex; 
-            align-items: center; 
-            gap: 4px; 
-        } 
-
-        .brand span { 
-            color: var(--primary); 
-        } 
-
-        .brand:hover { 
-            transform: translateY(-1px);
-            opacity: 0.95; 
-        } 
-
-        .nav-menus { 
-            display: flex; 
-            gap: 12px; 
-            align-items: center; 
-        } 
-
-        .nav-btn { 
-            background: rgba(255, 255, 255, 0.03); 
-            border: 1px solid var(--border-line); 
-            font-weight: 600; 
-            font-size: 14px; 
-            color: var(--text-muted); 
-            cursor: pointer; 
-            padding: 12px 22px; 
-            border-radius: var(--radius-sm); 
-            transition: var(--fluid-motion); 
-        } 
-
-        .nav-btn:hover { 
-            background: rgba(255, 255, 255, 0.08); 
-            color: white; 
-            border-color: rgba(255, 255, 255, 0.2); 
-        } 
-
-        .nav-btn.active-tab {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--primary);
-            border-color: rgba(56, 189, 248, 0.3);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyAnything123 - Premium Shop</title>
+    <!-- FontAwesome for clean icons -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- Google Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --danger: #ef4444;
+            --success: #22c55e;
         }
 
-        .cart-badge { 
-            background: var(--primary); 
-            color: #06080f; 
-            font-size: 11px; 
-            padding: 2px 7px; 
-            border-radius: 30px; 
-            margin-left: 4px; 
-            font-weight: 800; 
-        } 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
 
-        .admin-indicator { 
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(16, 185, 129, 0.15)); 
-            border: 1px solid rgba(56, 189, 248, 0.3); 
-            color: var(--primary); 
-            padding: 10px 20px; 
-            border-radius: 40px; 
-            font-size: 13px; 
-            font-weight: 700; 
-            display: none; 
-            letter-spacing: 0.5px;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
-        } 
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
 
-        .main-container { 
-            max-width: 1500px; 
-            margin: 40px auto; 
-            padding: 0 40px; 
-        } 
+        /* Navbar */
+        nav {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-        .view-section { 
-            display: none; 
-            animation: viewGate 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
-        } 
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
 
-        .view-section.active { 
-            display: block; 
-        } 
+        .nav-btn {
+            background: #f1f5f9;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
 
-        @keyframes viewGate { 
-            from { opacity: 0; transform: translateY(20px); filter: blur(8px); } 
-            to { opacity: 1; transform: translateY(0); filter: blur(0); } 
-        } 
+        .nav-btn:hover {
+            background: var(--border);
+        }
 
-        .market-layout { 
-            display: grid; 
-            grid-template-columns: 320px 1fr; 
-            gap: 40px; 
-        } 
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
 
-        .sidebar { 
-            background: var(--bg-surface); 
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--border-line); 
-            padding: 30px; 
-            border-radius: var(--radius-lg); 
-            box-shadow: var(--layer-shadow); 
-            height: fit-content; 
-        } 
+        /* Category Filter Tabs */
+        .categories-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
 
-        .sidebar h3 { 
-            margin-bottom: 20px; 
-            font-size: 12px; 
-            color: var(--text-muted); 
-            font-weight: 800; 
-            letter-spacing: 2px; 
-            text-transform: uppercase; 
-            border-bottom: 1px solid var(--border-line); 
-            padding-bottom: 12px; 
-        } 
+        .tab-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
 
-        .category-list { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 8px; 
-        } 
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
 
-        .cat-pill { 
-            display: block; 
-            width: 100%; 
-            text-align: left; 
-            padding: 14px 18px; 
-            background: transparent; 
-            border: 1px solid transparent; 
-            border-radius: var(--radius-md); 
-            cursor: pointer; 
-            font-weight: 600; 
-            font-size: 15px; 
-            color: var(--text-muted); 
-            transition: var(--fluid-motion); 
-        } 
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
 
-        .cat-pill.active { 
-            background: rgba(255, 255, 255, 0.05); 
-            color: white; 
-            border-color: var(--border-line); 
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
-            transform: translateX(4px); 
-        } 
+        .product-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
 
-        .cat-pill:not(.active):hover { 
-            color: white; 
-            padding-left: 24px; 
-            background: rgba(255, 255, 255, 0.02); 
-        } 
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
 
-        .product-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); 
-            gap: 30px; 
-        } 
+        .product-img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            background: #e2e8f0;
+        }
 
-        .product-card { 
-            background: var(--bg-surface); 
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--border-line); 
-            border-radius: var(--radius-lg); 
-            overflow: hidden; 
-            box-shadow: var(--layer-shadow); 
-            display: flex; 
-            flex-direction: column; 
-            transition: var(--fluid-motion); 
-        } 
+        .product-info {
+            padding: 1.25rem;
+        }
 
-        .product-card:hover { 
-            transform: translateY(-6px); 
-            border-color: rgba(56, 189, 248, 0.35); 
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(56, 189, 248, 0.15); 
-        } 
+        .product-cat {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
 
-        .product-img-wrapper { 
-            width: 100%; 
-            height: 250px; 
-            background: #090d16; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            overflow: hidden; 
-            position: relative; 
-            border-bottom: 1px solid var(--border-line); 
-        } 
+        .product-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
 
-        .product-img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            transition: var(--fluid-motion); 
-        } 
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
 
-        .product-card:hover .product-img { 
-            transform: scale(1.05); 
-            filter: brightness(1.05); 
-        } 
+        /* Admin Modal & Panel */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
 
-        .product-placeholder { 
-            color: #1e293b; 
-            font-size: 14px; 
-            font-weight: 700; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 12px; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px; 
-        } 
+        .modal-content {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
 
-        .product-info { 
-            padding: 24px; 
-            display: flex; 
-            flex-direction: column; 
-            flex-grow: 1; 
-            justify-content: space-between; 
-            gap: 18px; 
-        } 
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
 
-        .cat-tag { 
-            font-size: 11px; 
-            color: var(--primary); 
-            background: rgba(56, 189, 248, 0.08); 
-            padding: 5px 12px; 
-            border-radius: 6px; 
-            width: fit-content; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            letter-spacing: 0.5px; 
-            border: 1px solid rgba(56, 189, 248, 0.15); 
-        } 
+        /* Forms styling */
+        h2 { margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.875rem;}
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+        input:focus, select:focus { border-color: var(--primary); }
+        
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:hover { background: var(--primary-hover); }
 
-        .product-card h4 { 
-            font-size: 20px; 
-            color: white; 
-            font-weight: 700; 
-            line-height: 1.4; 
-            margin-top: 8px;
-        } 
+        /* Admin Layout Grid */
+        .admin-section {
+            display: none;
+            margin-top: 2rem;
+            border-top: 2px dashed var(--border);
+            padding-top: 2rem;
+        }
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 768px) {
+            .admin-grid { grid-template-columns: 1fr; }
+        }
 
-        .product-footer { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding-top: 16px; 
-            border-top: 1px solid var(--border-line); 
-        } 
+        .panel-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
 
-        .product-card .price { 
-            font-size: 22px; 
-            font-weight: 800; 
-            color: white; 
-            letter-spacing: -0.5px;
-        } 
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .delete-btn {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+        }
 
-        .form-box { 
-            max-width: 650px; 
-            margin: 0 auto; 
-            background: var(--bg-surface); 
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            padding: 40px; 
-            border-radius: var(--radius-lg); 
-            box-shadow: var(--layer-shadow); 
-border: 1px solid var(--border-line);}.form-box h2 {margin-bottom: 24px;color: white;font-weight: 800;font-size: 26px;letter-spacing: -0.5px;}.form-box h3 {margin-bottom: 18px;color: white;font-weight: 700;font-size: 18px;}.form-group {margin-bottom: 22px;}.form-group label {display: block;margin-bottom: 8px;font-weight: 700;font-size: 12px;color: var(--text-muted);text-transform: uppercase;letter-spacing: 1px;}.form-group input, .form-group select, .form-group textarea {width: 100%;padding: 14px 16px;background: rgba(6, 8, 15, 0.4);border: 1px solid var(--border-line);border-radius: var(--radius-md);font-size: 15px;outline: none;color: white;transition: var(--fluid-motion);}.form-group input:focus, .form-group select:focus, .form-group textarea:focus {border-color: var(--primary);box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);background: rgba(6, 8, 15, 0.6);}.btn-action {width: 100%;padding: 14px;background: var(--text-main);color: #06080f;border: none;border-radius: var(--radius-md);font-weight: 700;cursor: pointer;font-size: 15px;transition: var(--fluid-motion);}.btn-action:hover {background: var(--primary);color: #06080f;transform: translateY(-2px);box-shadow: 0 12px 24px rgba(56, 189, 248, 0.25);}.btn-danger {background: rgba(239, 68, 68, 0.1);color: #f87171;border: 1px solid rgba(239, 68, 68, 0.2);padding: 6px 12px;border-radius: 8px;font-weight: 600;cursor: pointer;transition: var(--fluid-motion);}.btn-danger:hover {background: #ef4444;color: white;border-color: #ef4444;}.empty-state {grid-column: 1/-1;text-align: center;padding: 60px 30px;background: rgba(255, 255, 255, 0.01);border-radius: var(--radius-lg);border: 1px dashed var(--border-line);}.empty-state h3 {font-size: 18px;font-weight: 700;color: white;margin-bottom: 6px;}.empty-state p {color: var(--text-muted);max-width: 400px;margin: 0 auto;line-height: 1.5;font-size: 14px;}.cart-list {margin-bottom: 24px;}.cart-item {background: var(--bg-surface);padding: 20px 24px;border-radius: var(--radius-md);display: flex;justify-content: space-between;align-items: center;margin-bottom: 12px;border: 1px solid var(--border-line);}.ticket-card {background: var(--bg-surface);padding: 24px;border-radius: var(--radius-lg);margin-bottom: 20px;box-shadow: var(--layer-shadow);border: 1px solid var(--border-line);border-left: 4px solid var(--text-muted);}.ticket-card.answered {border-left-color: var(--accent);}.ticket-card.pending {border-left-color: #f59e0b;}.ticket-header {display: flex;justify-content: space-between;align-items: center;font-size: 12px;font-weight: 700;color: var(--text-muted);border-bottom: 1px solid var(--border-line);padding-bottom: 12px;margin-bottom: 14px;letter-spacing: 0.5px;}.admin-reply-box {background: rgba(56, 189, 248, 0.02);padding: 16px;border-left: 3px solid var(--primary);margin-top: 14px;border-radius: 0 var(--radius-sm) var(--radius-sm) 0;color: #e0f2fe;font-weight: 500;line-height: 1.5;border: 1px solid rgba(56, 189, 248, 0.05);border-left: none;font-size: 14px;}.admin-grid-layout {display: grid;grid-template-columns: 1fr 1fr;gap: 30px;margin-top: 20px;}.list-management-row {display: flex;justify-content: space-between;align-items: center;padding: 12px 16px;background: rgba(6, 8, 15, 0.2);border-radius: var(--radius-sm);border: 1px solid var(--border-line);margin-bottom: 8px;}.list-management-row span {font-weight: 600;font-size: 14px;}.category-header-title {color: white;margin: 30px 0 15px 0;font-size: 22px;font-weight: 800;letter-spacing: -0.5px;display: flex;align-items: center;gap: 8px;}.category-header-title::after {content: '';flex-grow: 1;height: 1px;background: linear-gradient(to right, var(--border-line), transparent);margin-left: 15px;}// Core Memory Stagingvar categories = JSON.parse(localStorage.getItem('ba_categories')) || ['Electronics', 'Apparel', 'Accessories'];var products = JSON.parse(localStorage.getItem('ba_products')) || [];var tickets = JSON.parse(localStorage.getItem('ba_tickets')) || [];var cart = [];var currentCategoryFilter = 'All';var isAdmin = false;var adminSettings = JSON.parse(localStorage.getItem('ba_settings')) || { email: 'admin@buyanything.com' };// App Initializer Blockfunction initApp() {if(document.getElementById('adminConfigEmail')) {document.getElementById('adminConfigEmail').value = adminSettings.email;}renderMarketCategories();renderMarketProducts();renderTickets();updateCartCounter();populateAdminDropdown();renderAdminManagementLists();}// Unified Component View Routerfunction switchView(viewId) {var sections = document.querySelectorAll('.view-section');for (var i = 0; i < sections.length; i++) {sections[i].classList.remove('active');}var targetSection = document.getElementById('view-' + viewId);if(targetSection) {targetSection.classList.add('active');}var tabs = document.querySelectorAll('.nav-menus .nav-btn');tabs.forEach(tab => tab.classList.remove('active-tab'));var activeTab = document.getElementById('btn-' + viewId);if(activeTab) activeTab.classList.add('active-tab');if(viewId === 'market') {renderMarketCategories();renderMarketProducts();}if(viewId === 'cart') renderCart();if(viewId === 'suggestions') renderTickets();if(viewId === 'admin') {populateAdminDropdown();renderAdminManagementLists();}}// Identity Validation Access Controllerfunction handleLogin() {var pass = document.getElementById('loginPass').value;if (pass === 'buyanything123') {isAdmin = true;document.getElementById('adminBadge').style.display = 'block';document.getElementById('adminNavBtn').style.display = 'block';document.getElementById('logoutNavBtn').style.display = 'block';document.getElementById('loginNavBtn').style.display = 'none';document.getElementById('loginPass').value = '';switchView('admin');} else {alert('Invalid operational gate credentials.');}}function handleLogout() {isAdmin = false;document.getElementById('adminBadge').style.display = 'none';document.getElementById('adminNavBtn').style.display = 'none';document.getElementById('logoutNavBtn').style.display = 'none';document.getElementById('loginNavBtn').style.display = 'block';switchView('market');}function saveAdminSettings() {adminSettings.email = document.getElementById('adminConfigEmail').value;localStorage.setItem('ba_settings', JSON.stringify(adminSettings));alert('System target profile matrix synchronized.');}// Dynamic Filtering Componentsfunction renderMarketCategories() {var container = document.getElementById('marketCategories');if(!container) return;var html = 'All Collection Lines';for (var i = 0; i < categories.length; i++) {html += '' + categories[i] + '';}container.innerHTML = html;}function filterCategory(cat) {currentCategoryFilter = cat;renderMarketCategories();renderMarketProducts();}function populateAdminDropdown() {var dropdown = document.getElementById('newItemCategory');if(dropdown) {dropdown.innerHTML = categories.map(function(c) {return '' + c + '';}).join('');}}// Scheme Schema Modifiers: Categoriesfunction addCategory() {var input = document.getElementById('newCatName');if(!input || !input.value.trim()) return alert('Please enter a valid node label description.');var newCat = input.value.trim();if(categories.indexOf(newCat) === -1) {categories.push(newCat);localStorage.setItem('ba_categories', JSON.stringify(categories));}input.value = '';alert('Category cluster node structural layout added.');populateAdminDropdown();renderMarketCategories();renderAdminManagementLists();}function removeCategory(catName) {if(confirm('Purge structural group collection: "' + catName + '" from local schema arrays?')) {categories = categories.filter(function(c) { return c !== catName; });localStorage.setItem('ba_categories', JSON.stringify(categories));if(currentCategoryFilter === catName) currentCategoryFilter = 'All';populateAdminDropdown();renderMarketCategories();renderMarketProducts();renderAdminManagementLists();}}// Context-Aware Image Asset Model Generatorfunction triggerAIEngine() {var keyword = document.getElementById('newItemName').value.trim();if(!keyword) return alert('Please input an item presentation name first so the semantic media model can parse contextual concepts.');var cleanTerm = encodeURIComponent(keyword.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, ''));var generatedSourceUrl = 'unsplash.com';if(cleanTerm.length > 0) {generatedSourceUrl = 'unsplash.com' + cleanTerm;}document.getElementById('newItemImageUrl').value = generatedSourceUrl;alert('AI Media Generation Sequence Finalized.\n\nParsed design node for: "' + keyword + '".');}// Scheme Schema Modifiers: Catalog Showcasefunction addCatalogItem() {var n = document.getElementById('newItemName').value.trim();var c = document.getElementById('newItemCategory').value;var p = parseFloat(document.getElementById('newItemPrice').value);var img = document.getElementById('newItemImageUrl').value.trim();if(!n || !c || isNaN(p)) return alert('Provide full item properties to register asset.');products.push({ id: Date.now(), name: n, category: c, price: p, image: img });localStorage.setItem('ba_products', JSON.stringify(products));document.getElementById('newItemName').value = '';document.getElementById('newItemPrice').value = '';document.getElementById('newItemImageUrl').value = '';alert('New luxury asset registered to catalog showcase node.');renderMarketProducts();renderAdminManagementLists();}function removeCatalogItem(id) {if(confirm('Completely erase this item asset token from showcase schemas?')) {products = products.filter(function(p) { return p.id !== id; });localStorage.setItem('ba_products', JSON.stringify(products));renderMarketProducts();renderAdminManagementLists();}}// Panel Dynamic Target View Management Loopsfunction renderAdminManagementLists() {var catList = document.getElementById('adminCategoryList');var prodList = document.getElementById('adminProductList');if(catList) {catList.innerHTML = categories.length === 0 ? 'No categories defined.' : categories.map(function(c) {return '' + c + 'Purge';}).join('');}if(prodList) {prodList.innerHTML = products.length === 0 ? 'No product assets present.' : products.map(function(p) {return '' + p.name + 'Delete';}).join('');}}function renderMarketProducts() {var container = document.getElementById('marketProducts');if(!container) return;var visibleCategories = currentCategoryFilter === 'All' ? categories : [currentCategoryFilter];var html = '';var totalCount = 0;for (var i = 0; i < visibleCategories.length; i++) {var cat = visibleCategories[i];var filtered = products.filter(function(p) { return p.category === cat; });if (filtered.length > 0) {totalCount += filtered.length;html += '' + cat + '';for (var j = 0; j < filtered.length; j++) {var imgHtml = filtered[j].image ? '' : '📦 No Presentation Asset';html += '' + imgHtml + '' + filtered[j].category + '' + filtered[j].name + '$' + filtered[j].price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + 'Add to Cart';}}}container.innerHTML = totalCount === 0 ? 'Collection Catalog VacantActive parameters found no catalog items. Access the Auth Terminal to add custom premium assets.' : html;}// Pipeline Logicfunction addToCart(id) {var productItem = products.find(function(x) { return x.id === id; });if(productItem) {cart.push(productItem);updateCartCounter();alert('Asset added to pipeline.');}}function updateCartCounter() {var counterSpan = document.getElementById('cartCount');if(counterSpan) counterSpan.innerText = cart.length;}function renderCart() {var container = document.getElementById('cartItemsList');var totalSpan = document.getElementById('cartTotal');if(!container || !totalSpan) return;if(cart.length === 0) {container.innerHTML = 'Pipeline EmptyNo procurement requests staged.';totalSpan.innerText = '$0.00';return;}var sum = 0;var html = '';for (var i = 0; i < cart.length; i++) {sum += cart[i].price;html += '' + cart[i].category + '' + cart[i].name + '$' + cart[i].price.toLocaleString('en-US', {minimumFractionDigits: 2}) + 'Remove';}container.innerHTML = html;totalSpan.innerText = '$' + sum.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});}function removeFromCart(index) {cart.splice(index, 1);updateCartCounter();renderCart();}function submitOrder() {var name = document.getElementById('orderName').value.trim();var address = document.getElementById('orderAddress').value.trim();if(!name || !address || cart.length === 0) return alert('Staged data lists or parameters invalid.');var itemsList = [];var totalValuePrice = 0;for (var i = 0; i < cart.length; i++) {itemsList.push('- ' + cart[i].name + ' [Class: ' + cart[i].category + '] ($' + cart[i].price.toFixed(2) + ')');totalValuePrice += cart[i].price;}window.location.href = 'mailto:' + adminSettings.email + '?subject=Premium Order Stream Request&body=' + encodeURIComponent('Premium Routing Summary:\nName: ' + name + '\nDestination Path: ' + address + '\n\n Staged Items Block:\n' + itemsList.join('\n') + '\n\nConsolidated Evaluation: $' + totalValuePrice.toFixed(2));cart = [];updateCartCounter();document.getElementById('orderName').value = '';document.getElementById('orderAddress').value = '';switchView('market');alert('Mailing data packet payload parsed and initialized.');}// Feedback & Simulation Ticketing Systemsfunction createTicket() {var titleText = document.getElementById('suggestName').value.trim();var messageText = document.getElementById('suggestDesc').value.trim();if(!titleText || !messageText) return alert('Provide full tracking metric descriptions.');tickets.push({ id: Date.now(), title: titleText, message: messageText, replies: [] });localStorage.setItem('ba_tickets', JSON.stringify(tickets));document.getElementById('suggestName').value = '';document.getElementById('suggestDesc').value = '';alert('Dynamic simulation feedback node launched.');renderTickets();}function renderTickets() {var userContainer = document.getElementById('userTicketMessage');var adminContainer = document.getElementById('adminChatDashboard');if(!userContainer || !adminContainer) return;if (!isAdmin) {userContainer.style.display = 'block';adminContainer.style.display = 'none';return;}userContainer.style.display = 'none';adminContainer.style.display = 'block';if(tickets.length === 0) {adminContainer.innerHTML = 'No dynamic diagnostic history threads logged.';return;}adminContainer.innerHTML = tickets.map(function(t) {var chatRepliesContent = '';if(t.replies && t.replies.length > 0) {chatRepliesContent = t.replies.map(function(r) {return '' + r.sender + ' • ' + r.time + '' + r.text + '';}).join('');}var chatFormMarkup = 'Send Node';return '' +'Core Hub Stream Code: #' + t.id + 'LIVE CHAT MATRIX SYNCED' +'' + t.title + '' +'' + t.message + '' +chatRepliesContent + chatFormMarkup +'';}).join('');}function submitChatReply(id) {var replyInputField = document.getElementById('chat-reply-input-' + id);var textValue = replyInputField.value.trim();if(!textValue) return;var matchToken = tickets.find(function(t) { return t.id === id; });if(matchToken) {if(!matchToken.replies) matchToken.replies = [];var currentTimeStamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});matchToken.replies.push({ sender: 'AUTHORIZED_SYS_OPERATOR', time: currentTimeStamp, text: textValue });localStorage.setItem('ba_tickets', JSON.stringify(tickets));replyInputField.value = '';renderTickets();}}// Core App Initialization Boot Event Hookwindow.onload = initApp;
+        /* AI Checkbox Container */
+        .ai-toggle-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #eff6ff;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #bfdbfe;
+        }
+        .ai-toggle-box input { width: auto; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">buyanything123</a>
+        <button class="nav-btn" id="adminControlBtn"><i class="fa-solid fa-lock"></i> Admin Settings</button>
+    </nav>
+
+    <div class="container">
+        <!-- Shop Section -->
+        <div id="shopView">
+            <div class="categories-tabs" id="categoriesTabs">
+                <!-- Dynamically generated -->
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- Dynamically generated -->
+            </div>
+        </div>
+
+        <!-- Admin Control Workspace Panel (Visible after password validation) -->
+        <div class="admin-section" id="adminPanel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2><i class="fa-solid fa-gear"></i> Admin Management Dashboard</h2>
+                <button class="nav-btn" onclick="logoutAdmin()" style="color: var(--danger)">Log Out</button>
+            </div>
+            
+            <div class="admin-grid">
+                <!-- Category Management -->
+                <div class="panel-box">
+                    <h3>Manage Categories</h3>
+                    <form id="addCategoryForm" style="margin-top: 1rem;">
+                        <div class="form-group">
+                            <input type="text" id="newCategoryName" placeholder="Category Name (e.g., Electronics)" required>
+                        </div>
+                        <button type="submit" class="btn"><i class="fa-solid fa-plus"></i> Add Category</button>
+                    </form>
+                    <div id="adminCategoriesList" style="margin-top: 1.5rem;">
+                        <!-- Category list with delete options -->
+                    </div>
+                </div>
+
+                <!-- Product Management -->
+                <div class="panel-box">
+                    <h3>Manage Products</h3>
+                    <form id="addProductForm" style="margin-top: 1rem;">
+                        <div class="form-group">
+                            <label>Product Name</label>
+                            <input type="text" id="prodName" required placeholder="iPhone 15, Running Shoes...">
+                        </div>
+                        <div class="form-group">
+                            <label>Price ($)</label>
+                            <input type="number" id="prodPrice" step="0.01" required placeholder="99.99">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="prodCategory" required>
+                                <!-- Managed dynamically -->
+                            </select>
+Auto-Generate AI Image from Name
+                            Or Image URL
+
+                            Add Product
+
+                            x
+                            Admin Verification
+
+                            
+                            Enter Security Key
+
+                            Unlock Dashboard
+                            
