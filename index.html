@@ -108,21 +108,26 @@
             </div>
         </section>
         <section id="view-suggestions" class="view-section">
-            <div style="max-width: 900px; margin: 0 auto;">
+            <div style="max-width: 950px; margin: 0 auto;">
                 <div class="form-box" style="margin-bottom: 40px; max-width: 100%;">
                     <h2>Deploy Concept Simulation Ticket</h2>
                     <div class="form-group"><label>Proposed Asset Name</label><input type="text" id="suggestName" placeholder="What asset line do we need?"></div>
                     <div class="form-group"><label>Technical Description</label><textarea id="suggestDesc" rows="4" placeholder="Explain requirements..."></textarea></div>
                     <button class="btn-action" onclick="createTicket()">Launch Feedback Node</button>
                 </div>
-                <h2>Active Community Suggestion Nodes</h2>
-                <div id="ticketContainer"></div>
+                
+                <div id="userTicketMessage" style="display:block; text-align:center; padding:40px; border:1px dashed var(--border-line); background:var(--bg-surface); border-radius:12px;">
+                    <h3 style="color:white; margin-bottom:10px;">Ticket Successfully Initialized</h3>
+                    <p style="color:var(--text-muted); font-size:15px; max-width:500px; margin:0 auto;">For optimal security metrics, the full dynamic tracking history board and operational admin-to-admin chat loop arrays are restricted exclusively to authorized administrative nodes.</p>
+                </div>
+
+                <div id="adminChatDashboard" style="display:none;"></div>
             </div>
         </section>
         <section id="view-login" class="view-section">
             <div class="form-box">
                 <h2>Admin Identity Auth</h2>
-                <div class="form-group"><label>Pass Key Validation</label><input type="password" id="loginPass" placeholder="••••••••" value="buyanything123"></div>
+                <div class="form-group"><label>Pass Key Validation</label><input type="password" id="loginPass" placeholder="••••••••"></div>
                 <button class="btn-action" onclick="handleLogin()">Unlock Control Terminal</button>
             </div>
         </section>
@@ -135,6 +140,10 @@
                         <div class="form-group" style="margin-top: 15px;"><label>Invoice Receiver Email</label><input type="email" id="adminConfigEmail" placeholder="admin@buyanything.com"></div>
                         <button class="btn-action" onclick="saveAdminSettings()">Save Configuration</button>
                     </div>
+                    <div class="form-box" style="margin: 0 0 35px 0; max-width: 100%;">
+                        <h3>Active Category Groups</h3>
+                        <div id="adminCategoryList" style="margin-top:15px; max-height:200px; overflow-y:auto; padding-right:5px;"></div>
+                    </div>
                     <div class="form-box" style="margin: 0; max-width: 100%;">
                         <h3>Map New Category Group</h3>
                         <div class="form-group" style="margin-top: 15px;"><label>Category Identifier</label><input type="text" id="newCatName" placeholder="e.g., Luxury Horology"></div>
@@ -142,6 +151,10 @@
                     </div>
                 </div>
                 <div>
+                    <div class="form-box" style="margin: 0 0 35px 0; max-width: 100%;">
+                        <h3>Active Catalog Assets</h3>
+                        <div id="adminProductList" style="margin-top:15px; max-height:200px; overflow-y:auto; padding-right:5px;"></div>
+                    </div>
                     <div class="form-box" style="margin: 0; max-width: 100%;">
                         <h3>Compile New Catalog Asset</h3>
                         <div class="form-group" style="margin-top: 15px;"><label>Asset Name</label><input type="text" id="newItemName" placeholder="Product name..."></div>
