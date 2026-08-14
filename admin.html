@@ -51,12 +51,20 @@
     <div class="container">
         <!-- Password gate layout prompt box -->
         <div id="adminAuthGate" class="modal-fallback">
-            <h2 style="margin-bottom: 0.5rem;"><i class="fa-solid fa-lock"></i> Verification Required</h2>
+            <h2><i class="fa-solid fa-lock"></i> Verification Required</h2>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Enter the security password string below to sync.</p>
-            <div class="form-group">
-                <input type="password" id="password" placeholder="Type passcode here..." autofocus>
-            </div>
-            <p style="font-size: 0.8rem; color: var(--text-muted);">Dashboard auto-unlocks upon correct entry match.</p>
+            
+            <form id="adminLoginForm" onsubmit="event.preventDefault();">
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Type passcode here..." autofocus required>
+                </div>
+                <!-- Explicit click submit handler button -->
+                <button type="button" id="submitPassBtn" class="btn" style="margin-top: 0.5rem; background: var(--primary);">
+                    Continue to Dashboard <i class="fa-solid fa-arrow-right" style="margin-left: 5px;"></i>
+                </button>
+            </form>
+            
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1.25rem;">Dashboard auto-unlocks upon correct entry match.</p>
         </div>
 
         <!-- Authorized Main Control View Workspace -->
