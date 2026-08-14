@@ -3,168 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BuyAnything - Next-Gen Spatial Marketplace</title>
+    <title>BuyAnything - Premium Executive Marketplace</title>
     <style>
         :root {
-            --primary: #3b82f6; --primary-hover: #2563eb; --dark: #090d16; --light: #0f172a;
-            --accent: #10b981; --text: #f8fafc; --text-light: #94a3b8; --admin-color: #8b5cf6;
-            --radius-lg: 24px; --radius-md: 16px; --radius-sm: 12px;
-            --shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-canvas: #090b11; --bg-surface: #111420; --bg-card: #171c2e;
+            --primary: #38bdf8; --primary-hover: #0284c7; --accent: #34d399;
+            --text-main: #f8fafc; --text-muted: #94a3b8; --border-line: rgba(255,255,255,0.06);
+            --radius-lg: 20px; --radius-md: 14px; --radius-sm: 10px;
+            --layer-shadow: 0 20px 40px -15px rgba(0,0,0,0.6);
+            --fluid-motion: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { background: radial-gradient(circle at top right, #111827, #030712); color: var(--text); min-height: 100vh; font-size: 16px; padding-bottom: 80px; overflow-x: hidden; }
-        header { background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); position: sticky; top: 0; z-index: 100; }
-        .navbar { max-width: 1500px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 25px 40px; }
-        .brand { font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; letter-spacing: -1px; transition: var(--transition); }
-        .brand:hover { transform: scale(1.03) rotate(-1deg); filter: drop-shadow(0 0 15px rgba(96,165,250,0.5)); }
-        .nav-menus { display: flex; gap: 10px; align-items: center; }
-        .nav-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); font-weight: 700; font-size: 15px; color: var(--text-light); cursor: pointer; padding: 14px 24px; border-radius: var(--radius-sm); transition: var(--transition); }
-        .nav-btn:hover { background: rgba(255,255,255,0.08); color: white; border-color: var(--primary); transform: translateY(-2px); }
-        .cart-badge { background: linear-gradient(135deg, #ef4444, #f43f5e); color: white; font-size: 12px; padding: 3px 9px; border-radius: 30px; margin-left: 8px; font-weight: 800; box-shadow: 0 4px 10px rgba(239,68,68,0.4); }
-        .admin-indicator { background: linear-gradient(135deg, var(--admin-color), #a78bfa); color: white; padding: 8px 18px; border-radius: 40px; font-size: 13px; font-weight: 800; display: none; box-shadow: 0 8px 20px rgba(139,92,246,0.3); letter-spacing: 0.5px; }
-        .main-container { max-width: 1500px; margin: 60px auto; padding: 0 40px; }
-        .view-section { display: none; animation: scaleUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg-canvas); color: var(--text-main); min-height: 100vh; font-size: 16px; padding-bottom: 80px; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        header { background: rgba(17, 20, 32, 0.75); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-line); position: sticky; top: 0; z-index: 100; }
+        .navbar { max-width: 1500px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 22px 40px; }
+        .brand { font-size: 30px; font-weight: 800; color: white; cursor: pointer; letter-spacing: -0.5px; transition: var(--fluid-motion); display: flex; align-items: center; gap: 8px; }
+        .brand span { color: var(--primary); }
+        .brand:hover { transform: scale(1.01); opacity: 0.95; }
+        .nav-menus { display: flex; gap: 12px; align-items: center; }
+        .nav-btn { background: rgba(255,255,255,0.02); border: 1px solid var(--border-line); font-weight: 600; font-size: 15px; color: var(--text-muted); cursor: pointer; padding: 12px 24px; border-radius: var(--radius-sm); transition: var(--fluid-motion); }
+        .nav-btn:hover { background: rgba(255,255,255,0.06); color: white; border-color: var(--primary); }
+        .cart-badge { background: var(--primary); color: #090b11; font-size: 12px; padding: 2px 8px; border-radius: 30px; margin-left: 6px; font-weight: 800; }
+        .admin-indicator { background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.2); color: var(--primary); padding: 8px 18px; border-radius: 40px; font-size: 13px; font-weight: 700; display: none; }
+        .main-container { max-width: 1500px; margin: 50px auto; padding: 0 40px; }
+        .view-section { display: none; animation: viewGate 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .view-section.active { display: block; }
-        @keyframes scaleUp { from { opacity: 0; transform: scale(0.96) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-        /* Immersive Layout Grid & Sidebar Elements */
-        .market-layout { display: grid; grid-template-columns: 320px 1fr; gap: 50px; }
-        .sidebar { background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); padding: 35px; border-radius: var(--radius-lg); box-shadow: var(--shadow); height: fit-content; transition: var(--transition); }
-        .sidebar:hover { border-color: rgba(96, 165, 250, 0.15); box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.1); }
-        .sidebar h3 { margin-bottom: 25px; font-size: 20px; color: white; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; opacity: 0.9; }
-        .category-list { display: flex; flex-direction: column; gap: 10px; }
-        
-        /* Advanced Interactive Pill Options */
-        .cat-pill { display: block; width: 100%; text-align: left; padding: 16px 22px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); border-radius: var(--radius-sm); cursor: pointer; font-weight: 700; font-size: 16px; color: var(--text-light); transition: var(--transition); position: relative; overflow: hidden; }
-        .cat-pill::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 4px; background: var(--primary); transform: scaleY(0); transition: var(--transition); }
-        .cat-pill.active { background: linear-gradient(135deg, var(--primary), #1d4ed8); color: white; border-color: transparent; box-shadow: 0 10px 25px rgba(59,130,246,0.4); transform: scale(1.02); padding-left: 26px; }
-        .cat-pill.active::before { transform: scaleY(1); background: white; }
-        .cat-pill:not(.active):hover { background: rgba(255,255,255,0.06); color: white; padding-left: 28px; border-color: rgba(255,255,255,0.1); }
-        
-        /* Premium Showcase Product Display Matrix */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 35px; }
-        .product-card { background: rgba(15, 23, 42, 0.25); border: 1px solid rgba(255,255,255,0.04); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: var(--transition); position: relative; transform-style: preserve-3d; perspective: 1000px; }
-        .product-card:hover { transform: translateY(-12px) scale(1.02); border-color: var(--primary); box-shadow: 0 35px 70px -15px rgba(59,130,246,0.3); }
-        
-        /* Micro-Physics Image Engine wrappers */
-        .product-img-wrapper { width: 100%; height: 290px; background: #0b0f19; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .product-img { width: 100%; height: 100%; object-fit: cover; transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
-        .product-card:hover .product-img { transform: scale(1.1) rotate(1deg); filter: brightness(1.05); }
-        .product-placeholder { color: #334155; font-size: 16px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 12px; text-transform: uppercase; letter-spacing: 1px; }
-        
-        /* Information Panels and Micro Layout Typography */
-        .product-info { padding: 32px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; gap: 24px; background: linear-gradient(to bottom, transparent, rgba(3,7,18,0.4)); }
-        .cat-tag { font-size: 11px; color: var(--primary); background: rgba(59,130,246,0.12); padding: 5px 14px; border-radius: 20px; width: fit-content; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; border: 1px solid rgba(59,130,246,0.18); transition: var(--transition); }
-        .product-card:hover .cat-tag { background: var(--primary); color: white; border-color: transparent; box-shadow: 0 4px 10px rgba(59,130,246,0.3); }
-        .product-card h4 { font-size: 25px; color: white; font-weight: 800; line-height: 1.25; letter-spacing: -0.2px; transition: var(--transition); }
-        .product-card:hover h4 { color: #60a5fa; }
-        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
-        .product-card .price { font-size: 30px; font-weight: 900; color: #60a5fa; text-shadow: 0 0 12px rgba(96,165,250,0.25); transition: var(--transition); }
-        .product-card:hover .price { color: white; text-shadow: 0 0 15px rgba(255,255,255,0.4); }
-        
-        /* Premium Kinetic Forms Elements and Interactive Input Outlines */
-        .form-box { max-width: 650px; margin: 0 auto; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(25px); padding: 55px; border-radius: var(--radius-lg); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.06); transition: var(--transition); }
-        .form-box:hover { border-color: rgba(139, 92, 246, 0.15); box-shadow: 0 30px 60px -10px rgba(0,0,0,0.5); }
-        .form-box h2 { margin-bottom: 35px; color: white; font-weight: 900; font-size: 34px; letter-spacing: -0.8px; background: linear-gradient(135deg, white, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .form-box h3 { margin-bottom: 25px; color: white; font-weight: 800; font-size: 24px; }
-        .form-group { margin-bottom: 30px; position: relative; }
-        .form-group label { display: block; margin-bottom: 12px; font-weight: 700; font-size: 14px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.8px; transition: var(--transition); }
-        .form-group input:focus + label { color: var(--primary); }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 18px 22px; background: rgba(3,7,18,0.5); border: 2px solid rgba(255,255,255,0.05); border-radius: var(--radius-md); font-size: 16px; outline: none; color: white; transition: var(--transition); }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); background: rgba(3,7,18,0.8); box-shadow: 0 0 0 6px rgba(59,130,246,0.18); }
-        .btn-action { width: 100%; padding: 20px; background: linear-gradient(135deg, var(--primary), #1d4ed8); color: white; border: none; border-radius: var(--radius-md); font-weight: 800; cursor: pointer; font-size: 16px; transition: var(--transition); box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3); }
-        .btn-action:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(37, 99, 235, 0.55); filter: brightness(1.15); }
-        .btn-action:active { transform: translateY(-1px); }
-        .empty-state { grid-column: 1/-1; text-align: center; padding: 90px 40px; background: rgba(15,23,42,0.15); border-radius: var(--radius-lg); border: 2px dashed rgba(255,255,255,0.06); }
-        .empty-state h3 { font-size: 24px; font-weight: 800; color: white; margin-bottom: 15px; }
-        .empty-state p { color: var(--text-light); max-width: 520px; margin: 0 auto; line-height: 1.7; font-size: 15px; }
-        .cart-item { background: rgba(15,23,42,0.3); padding: 25px 30px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.04); transition: var(--transition); }
-        .cart-item:hover { border-color: rgba(255,255,255,0.1); background: rgba(15,23,42,0.5); }
-        .ticket-card { background: rgba(15, 23, 42, 0.2); padding: 35px; border-radius: var(--radius-lg); margin-bottom: 25px; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.04); border-left: 8px solid #475569; transition: var(--transition); }
-        .ticket-card.answered { border-left-color: var(--accent); background: rgba(16,185,129,0.01); } 
-        .ticket-card.pending { border-left-color: #f59e0b; background: rgba(245,158,11,0.01); }
-        .ticket-header { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 700; color: var(--text-light); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 18px; margin-bottom: 18px; }
-        .admin-reply-box { background: rgba(139,92,246,0.06); padding: 22px; border-left: 4px solid var(--admin-color); margin-top: 20px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; color: #d8b4fe; font-weight: 600; line-height: 1.6; border: 1px solid rgba(139,92,246,0.12); border-left: none; }
+        @keyframes viewGate { from { opacity: 0; transform: translateY(12px); filter: blur(4px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        .market-layout { display: grid; grid-template-columns: 310px 1fr; gap: 45px; }
+        .sidebar { background: var(--bg-surface); border: 1px solid var(--border-line); padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--layer-shadow); height: fit-content; transition: var(--fluid-motion); }
+        .sidebar:hover { border-color: rgba(56,189,248,0.15); box-shadow: 0 30px 60px -10px rgba(0,0,0,0.7); }
+        .sidebar h3 { margin-bottom: 22px; font-size: 14px; color: var(--text-muted); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px solid var(--border-line); padding-bottom: 10px; }
+        .category-list { display: flex; flex-direction: column; gap: 8px; }
+        .cat-pill { display: block; width: 100%; text-align: left; padding: 14px 20px; background: transparent; border: 1px solid transparent; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; font-size: 15px; color: var(--text-muted); transition: var(--fluid-motion); position: relative; }
+        .cat-pill.active { background: var(--bg-card); color: white; border-color: var(--border-line); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transform: translateX(4px); }
+        .cat-pill:not(.active):hover { color: white; padding-left: 26px; background: rgba(255,255,255,0.02); border-color: rgba(255,255,255,0.02); }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 35px; }
+        .product-card { background: var(--bg-surface); border: 1px solid var(--border-line); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--layer-shadow); display: flex; flex-direction: column; transition: var(--fluid-motion); position: relative; }
+        .product-card:hover { transform: translateY(-8px) scale(1.01); border-color: rgba(56,189,248,0.3); box-shadow: 0 35px 60px -10px rgba(0,0,0,0.6), 0 0 30px -5px rgba(56,189,248,0.15); }
+        .product-img-wrapper { width: 100%; height: 260px; background: #0c0e17; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; border-bottom: 1px solid var(--border-line); }
+        .product-img { width: 100%; height: 100%; object-fit: cover; transition: var(--fluid-motion); }
+        .product-card:hover .product-img { transform: scale(1.06) rotate(0.5deg); filter: brightness(1.05); }
+        .product-placeholder { color: #272f45; font-size: 15px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .product-info { padding: 28px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; gap: 20px; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.2)); }
+        .cat-tag { font-size: 11px; color: var(--text-muted); background: rgba(255,255,255,0.04); padding: 5px 12px; border-radius: 6px; width: fit-content; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid var(--border-line); transition: var(--fluid-motion); }
+        .product-card:hover .cat-tag { color: var(--primary); background: rgba(56,189,248,0.06); border-color: rgba(56,189,248,0.2); }
+        .product-card h4 { font-size: 22px; color: white; font-weight: 700; line-height: 1.35; letter-spacing: -0.2px; transition: var(--fluid-motion); }
+        .product-card:hover h4 { color: var(--primary); }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 18px; border-top: 1px solid var(--border-line); }
+        .product-card .price { font-size: 24px; font-weight: 700; color: white; }
+        .form-box { max-width: 620px; margin: 0 auto; background: var(--bg-surface); padding: 45px; border-radius: var(--radius-lg); box-shadow: var(--layer-shadow); border: 1px solid var(--border-line); }
+        .form-box h2 { margin-bottom: 30px; color: white; font-weight: 800; font-size: 28px; letter-spacing: -0.5px; }
+        .form-box h3 { margin-bottom: 20px; color: white; font-weight: 700; font-size: 20px; }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px 18px; background: var(--bg-canvas); border: 1px solid var(--border-line); border-radius: var(--radius-md); font-size: 16px; outline: none; color: white; transition: var(--fluid-motion); }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(56,189,248,0.1); }
+        .btn-action { width: 100%; padding: 16px; background: white; color: var(--bg-canvas); border: none; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; font-size: 16px; transition: var(--fluid-motion); }
+        .btn-action:hover { background: var(--primary); color: #090b11; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(56,189,248,0.2); }
+        .empty-state { grid-column: 1/-1; text-align: center; padding: 70px 40px; background: rgba(255,255,255,0.01); border-radius: var(--radius-lg); border: 1px dashed var(--border-line); }
+        .empty-state h3 { font-size: 20px; font-weight: 700; color: white; margin-bottom: 8px; }
+        .empty-state p { color: var(--text-muted); max-width: 480px; margin: 0 auto; line-height: 1.6; }
+        .cart-list { margin-bottom: 30px; }
+        .cart-item { background: var(--bg-surface); padding: 22px 28px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border: 1px solid var(--border-line); }
+        .ticket-card { background: var(--bg-surface); padding: 28px; border-radius: var(--radius-lg); margin-bottom: 22px; box-shadow: var(--layer-shadow); border: 1px solid var(--border-line); border-left: 6px solid #475569; }
+        .ticket-card.answered { border-left-color: var(--accent); } .ticket-card.pending { border-left-color: #f59e0b; }
+        .ticket-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-line); padding-bottom: 14px; margin-bottom: 14px; }
+        .admin-reply-box { background: rgba(56,189,248,0.03); padding: 18px; border-left: 3px solid var(--primary); margin-top: 18px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; color: #bae6fd; font-weight: 600; line-height: 1.6; border: 1px solid rgba(56,189,248,0.08); border-left: none; }
     </style>
 </head>
 <body>
     <header>
         <div class="navbar">
-            <div class="brand" onclick="switchView('market')">BuyAnything</div>
-            <div class="admin-indicator" id="adminBadge">Admin Terminal Active</div>
+            <div class="brand" onclick="switchView('market')">Buy<span>Anything</span></div>
+            <div class="admin-indicator" id="adminBadge">Authorized Deck</div>
             <nav class="nav-menus">
-                <button class="nav-btn" onclick="switchView('market')">Browse Hub</button>
-                <button class="nav-btn" onclick="switchView('suggestions')">Community Tickets</button>
-                <button class="nav-btn" onclick="switchView('cart')">Cart Matrix <span class="cart-badge" id="cartCount">0</span></button>
-                <button class="nav-btn" id="loginNavBtn" onclick="switchView('login')">Admin Auth</button>
-                <button class="nav-btn" id="adminNavBtn" onclick="switchView('admin')" style="display:none; color: #a78bfa; border-color: rgba(139,92,246,0.3);">Workspace Deck</button>
-                <button class="nav-btn" id="logoutNavBtn" onclick="handleLogout()" style="display:none;">Disconnect</button>
+                <button class="nav-btn" onclick="switchView('market')">Store</button>
+                <button class="nav-btn" onclick="switchView('suggestions')">Tickets</button>
+                <button class="nav-btn" onclick="switchView('cart')">Cart (<span id="cartCount">0</span>)</button>
+                <button class="nav-btn" id="loginNavBtn" onclick="switchView('login')">Login</button>
+                <button class="nav-btn" id="adminNavBtn" onclick="switchView('admin')" style="display:none; color: var(--primary); border-color: rgba(56,189,248,0.2);">Deck</button>
+                <button class="nav-btn" id="logoutNavBtn" onclick="handleLogout()" style="display:none;">Exit</button>
             </nav>
         </div>
     </header>
     <main class="main-container">
         <section id="view-market" class="view-section active">
             <div class="market-layout">
-                <aside class="sidebar"><h3>Market Groups</h3><div class="category-list" id="marketCategories"></div></aside>
+                <aside class="sidebar"><h3>Collections</h3><div class="category-list" id="marketCategories"></div></aside>
                 <div class="products-area"><div class="product-grid" id="marketProducts"></div></div>
             </div>
         </section>
         <section id="view-cart" class="view-section">
-            <div style="max-width: 850px; margin: 0 auto;">
-                <h2 style="margin-bottom: 30px; font-weight:900; font-size:36px;">Review Secure Order Buffer</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <h2 style="margin-bottom: 25px;">Shopping Checkout Pipeline</h2>
                 <div id="cartItemsList" class="cart-list"></div>
-                <div style="text-align: right; margin-bottom: 45px;"><h3 style="font-size:28px; font-weight:900;">Total Pipeline Allocation: <span style="color:#60a5fa; text-shadow:0 0 10px rgba(96,165,250,0.3);">$<span id="cartTotal">0.00</span></span></h3></div>
+                <div style="text-align: right; margin-bottom: 40px;"><h3 style="font-size:24px;">Total Balance: $<span id="cartTotal">0.00</span></h3></div>
                 <div class="form-box" style="margin: 0; max-width:100%;">
-                    <h3>Authorize Checkout Pipeline Routing</h3>
-                    <p style="font-size: 15px; margin-bottom: 30px; color: var(--text-light); line-height: 1.6;">Your selected items profile datasets will compile into an encrypted validation mailing path anchor.</p>
-                    <div class="form-group"><label>Consignee Full Identity</label><input type="text" id="orderName" placeholder="e.g. Johnathan Doe"></div>
-                    <div class="form-group"><label>Destination Matrix Address</label><input type="text" id="orderAddress" placeholder="Physical location routing metadata..."></div>
-                    <button class="btn-action" onclick="submitOrder()">Dispatch Order Routing Protocol</button>
+                    <h3>Verify Order Routing</h3>
+                    <p style="font-size: 14px; margin-bottom: 25px; color: var(--text-muted);">This packages your items list profile securely to link with your default mailing path client handler.</p>
+                    <div class="form-group"><label>Consignee Name</label><input type="text" id="orderName" placeholder="John Doe"></div>
+                    <div class="form-group"><label>Destination Address</label><input type="text" id="orderAddress" placeholder="123 Street, City, Country"></div>
+                    <button class="btn-action" onclick="submitOrder()">Dispatch Order Path</button>
                 </div>
             </div>
         </section>
         <section id="view-suggestions" class="view-section">
-            <div style="max-width: 950px; margin: 0 auto;">
-                <div class="form-box" style="margin-bottom: 50px; max-width: 100%;">
+            <div style="max-width: 900px; margin: 0 auto;">
+                <div class="form-box" style="margin-bottom: 40px; max-width: 100%;">
                     <h2>Deploy Concept Simulation Ticket</h2>
-                    <div class="form-group"><label>Proposed Item Asset Name</label><input type="text" id="suggestName" placeholder="What target asset should be introduced?"></div>
-                    <div class="form-group"><label>Functional Context Documentation</label><textarea id="suggestDesc" rows="4" placeholder="Explain technical necessity, requirements, and design profiles..."></textarea></div>
-                    <button class="btn-action" onclick="createTicket()">Launch Synchronization Node</button>
+                    <div class="form-group"><label>Proposed Asset Name</label><input type="text" id="suggestName" placeholder="What asset line do we need?"></div>
+                    <div class="form-group"><label>Technical Description</label><textarea id="suggestDesc" rows="4" placeholder="Explain requirements..."></textarea></div>
+                    <button class="btn-action" onclick="createTicket()">Launch Feedback Node</button>
                 </div>
-                <h2 style="margin-bottom: 30px; font-weight:900; font-size:28px;">Active Community Suggestions Nodes</h2>
+                <h2>Active Community Suggestion Nodes</h2>
                 <div id="ticketContainer"></div>
             </div>
         </section>
         <section id="view-login" class="view-section">
             <div class="form-box">
-                <h2>Admin Gate Authentication</h2>
-                <div class="form-group"><label>Authorization Pass Key Reference</label><input type="password" id="loginPass" placeholder="••••••••" value="buyanything123"></div>
-                <button class="btn-action" style="background: linear-gradient(135deg, var(--admin-color), #7c3aed); box-shadow: 0 8px 25px rgba(124,58,237,0.3);" onclick="handleLogin()">De-isolate Controls</button>
+                <h2>Admin Identity Auth</h2>
+                <div class="form-group"><label>Pass Key Validation</label><input type="password" id="loginPass" placeholder="••••••••" value="buyanything123"></div>
+                <button class="btn-action" onclick="handleLogin()">Unlock Control Terminal</button>
             </div>
         </section>
         <section id="view-admin" class="view-section">
-            <h2 style="color: #a78bfa; margin-bottom: 40px; font-weight:900; font-size:36px; text-shadow: 0 0 15px rgba(167,139,250,0.2);">Master Control Deck</h2>
+            <h2 style="color: var(--primary); margin-bottom: 35px;">Master Operations Deck</h2>
             <div class="admin-dashboard">
                 <div>
-                    <div class="form-box" style="margin: 0 0 40px 0; max-width: 100%;">
-                        <h3>Configure Target Destination Inbox</h3>
-                        <div class="form-group" style="margin-top: 20px;"><label>Invoice Receiver Mail Routing</label><input type="email" id="adminConfigEmail" placeholder="admin-inbox@example.com"></div>
-                        <button class="btn-action" style="background: var(--admin-color);" onclick="saveAdminSettings()">Save Target Parameters</button>
+                    <div class="form-box" style="margin: 0 0 35px 0; max-width: 100%;">
+                        <h3>Configure Target Mailbox</h3>
+                        <div class="form-group" style="margin-top: 15px;"><label>Invoice Receiver Email</label><input type="email" id="adminConfigEmail" placeholder="admin@buyanything.com"></div>
+                        <button class="btn-action" onclick="saveAdminSettings()">Save Configuration</button>
                     </div>
                     <div class="form-box" style="margin: 0; max-width: 100%;">
                         <h3>Map New Category Group</h3>
-                        <div class="form-group" style="margin-top: 20px;"><label>Category Identifier Label</label><input type="text" id="newCatName" placeholder="e.g., Spatial Computing"></div>
-                        <button class="btn-action" style="background: var(--admin-color);" onclick="addCategory()">Inject Category Node</button>
+                        <div class="form-group" style="margin-top: 15px;"><label>Category Identifier</label><input type="text" id="newCatName" placeholder="e.g., Luxury Horology"></div>
+                        <button class="btn-action" onclick="addCategory()">Inject Category Node</button>
                     </div>
                 </div>
                 <div>
                     <div class="form-box" style="margin: 0; max-width: 100%;">
                         <h3>Compile New Catalog Asset</h3>
-                        <div class="form-group" style="margin-top: 20px;"><label>Asset Presentation Name</label><input type="text" id="newItemName" placeholder="Product designation name..."></div>
-                        <div class="form-group"><label>Category Group Placement</label><select id="newItemCategory"></select></div>
-                        <div class="form-group"><label>Price Evaluation ($)</label><input type="number" id="newItemPrice" step="0.01" placeholder="0.00"></div>
-                        <div class="form-group"><label>Asset Image Presentation URI Link</label><input type="text" id="newItemImageUrl" placeholder="https://unsplash.com..."></div>
-                        <button class="btn-action" style="background: var(--admin-color);" onclick="addCatalogItem()">Commit & Publish Asset</button>
+                        <div class="form-group" style="margin-top: 15px;"><label>Asset Name</label><input type="text" id="newItemName" placeholder="Product name..."></div>
+                        <div class="form-group"><label>Category Placement</label><select id="newItemCategory"></select></div>
+                        <div class="form-group"><label>Price Point ($)</label><input type="number" id="newItemPrice" step="0.01" placeholder="0.00"></div>
+                        <div class="form-group"><label>Asset Image URL</label><input type="text" id="newItemImageUrl" placeholder="https://unsplash.com..."></div>
+                        <button class="btn-action" onclick="addCatalogItem()">Commit & Publish Asset</button>
                     </div>
                 </div>
             </div>
