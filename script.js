@@ -86,6 +86,23 @@ function removeCategory(catName) {
     }
 }
 
+// --- Brand New Core AI Media Simulation Engine Routine ---
+function triggerAIEngine() {
+    var keyword = document.getElementById('newItemName').value.trim();
+    if(!keyword) return alert('Please input an item presentation name first so the AI can parse semantic design concepts.');
+    
+    // Formats and encodes the item text to fetch a pristine matching Unsplash catalog asset
+    var cleanTerm = encodeURIComponent(keyword.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, ''));
+    var simulatedAIUrl = 'https://unsplash.com';
+    
+    if(cleanTerm.length > 0) {
+        simulatedAIUrl = 'https://unsplash.com?' + cleanTerm + ',' + Date.now();
+    }
+    
+    document.getElementById('newItemImageUrl').value = simulatedAIUrl;
+    alert('AI Media Generation Sequence Finalized. Semantic catalog nodes parsed for concept: "' + keyword + '".');
+}
+
 function addCatalogItem() {
     var n = document.getElementById('newItemName').value.trim(); var c = document.getElementById('newItemCategory').value; var p = parseFloat(document.getElementById('newItemPrice').value);
     var img = document.getElementById('newItemImageUrl').value.trim(); if(!n || !c || isNaN(p)) return alert('Provide details.');
@@ -93,13 +110,7 @@ function addCatalogItem() {
     document.getElementById('newItemName').value = ''; document.getElementById('newItemPrice').value = ''; document.getElementById('newItemImageUrl').value = '';
     alert('Asset published.'); renderMarketProducts(); renderAdminManagementLists();
 }
-
-function removeCatalogItem(id) {
-    if(confirm('Purge asset?')) {
-        products = products.filter(function(p) { return p.id !== id; }); localStorage.setItem('ba_products', JSON.stringify(products));
-        renderMarketProducts(); renderAdminManagementLists();
-    }
-}
+function removeCatalogItem(id) { if(confirm('Purge asset?')) { products = products.filter(function(p) { return p.id !== id; }); localStorage.setItem('ba_products', JSON.stringify(products)); renderMarketProducts(); renderAdminManagementLists(); } }
 
 function renderAdminManagementLists() {
     var catList = document.getElementById('adminCategoryList'); var prodList = document.getElementById('adminProductList');
@@ -122,6 +133,7 @@ function renderMarketProducts() {
     }
     container.innerHTML = count === 0 ? '<div class="empty-state"><h3>Catalog Empty</h3></div>' : html;
 }
+
 function addToCart(id) { var p = products.find(function(x) { return x.id === id; }); if(p) { cart.push(p); updateCartCounter(); } }
 function updateCartCounter() { var c = document.getElementById('cartCount'); if(c) c.innerText = cart.length; }
 
@@ -153,13 +165,8 @@ function renderTickets() {
     if (!isAdmin) { userContainer.style.display = 'block'; adminContainer.style.display = 'none'; return; }
     userContainer.style.display = 'none'; adminContainer.style.display = 'block';
     if(tickets.length === 0) { adminContainer.innerHTML = '<p>No ticket history nodes discovered.</p>'; return; }
-    
-    // Your exact custom streamlined chat template data binding preference:
     adminContainer.innerHTML = tickets.map(function(t) {
-        var chatHistoryHtml = ''; 
-        if(t.replies && t.replies.length > 0) { 
-            chatHistoryHtml = '' + t.replies.map(function(r) { return '' + r.sender + ' • ' + r.time + ' ' + r.text + ''; }).join('') + ''; 
-        }
+        var chatHistoryHtml = ''; if(t.replies && t.replies.length > 0) { chatHistoryHtml = '' + t.replies.map(function(r) { return '' + r.sender + ' • ' + r.time + ' ' + r.text + ''; }).join('') + ''; }
         var chatActionForm = '<div style="margin-top:15px; display:flex; gap:10px;"><input type="text" id="chat-reply-input-' + t.id + '" placeholder="Type message..." style="flex:1; padding:10px; background:var(--bg-canvas); border:1px solid var(--border-line); color:white; border-radius:6px;"><button class="btn-action" onclick="submitChatReply(' + t.id + ')" style="width:auto; padding:10px 20px; border-radius:6px;">Send Message</button></div>';
         return 'Core Hub Stream Code: #' + t.id + ' LIVE ADMIN CHAT ARRAY SYNCED Initial Request Concept: ' + t.title + ' ' + t.message + ' ' + chatHistoryHtml + chatActionForm + '';
     }).join('');
@@ -167,13 +174,11 @@ function renderTickets() {
 
 function submitChatReply(id) {
     var val = document.getElementById('chat-reply-input-' + id).value.trim(); if(!val) return;
-    var target = tickets.find(function(t) { return t.id === id; }); 
-    if(target) {
+    var target = tickets.find(function(t) { return t.id === id; }); if(target) {
         if(!target.replies) target.replies = [];
         var timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         target.replies.push({ sender: 'AUTHORIZED_ADMIN_NODE', time: timestamp, text: val });
-        localStorage.setItem('ba_tickets', JSON.stringify(tickets)); 
-        renderTickets();
+        localStorage.setItem('ba_tickets', JSON.stringify(tickets)); renderTickets();
     }
 }
 
