@@ -3,28 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BuyAnything123 - Premium School Shop</title>
-    <!-- FontAwesome Icons -->
+    <title>BuyAnything - Premium Marketplace</title>
+    <!-- FontAwesome for clean icons -->
     <link rel="stylesheet" href="https://cloudflare.com">
-    <!-- Google Fonts -->
+    <!-- Google Fonts Inter -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root {
             --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg: #f8fafc;
-            --surface: #ffffff;
-            --text: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
+            --primary-dark: #1d4ed8;
+            --bg: #0f172a; /* Premium Midnight Dark Slate BG */
+            --surface: #1e293b; /* Sleek surface contrast boxes */
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --success: #10b981;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding-bottom: 5rem; }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 4rem; overflow-x: hidden; }
 
-        /* Navigation Header */
+        /* Premium Title Header Navbar Layout */
         nav {
-            background: var(--surface);
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
             padding: 1rem 2rem;
             display: flex;
@@ -34,119 +36,162 @@
             top: 0;
             z-index: 100;
         }
-        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); text-decoration: none; }
+        .logo { font-size: 1.65rem; font-weight: 800; color: #ffffff; text-decoration: none; letter-spacing: -0.5px; }
+        .logo span { color: var(--primary); }
         .nav-right { display: flex; gap: 1rem; align-items: center; }
+        
         .nav-btn {
-            background: #f1f5f9;
-            border: none;
+            background: #273549;
+            border: 1px solid var(--border);
             padding: 0.6rem 1.2rem;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
-            transition: all 0.2s;
+            color: var(--text);
+            text-decoration: none;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            text-decoration: none;
-            color: var(--text);
+            transition: all 0.2s;
         }
-        .nav-btn:hover { background: var(--border); }
+        .nav-btn:hover { background: var(--primary); border-color: var(--primary); color: white; }
         .cart-count { background: var(--primary); color: white; padding: 0.1rem 0.5rem; border-radius: 50%; font-size: 0.8rem; }
 
-        /* Main Workspace Container */
         .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
-        .sections-divider { display: grid; grid-template-columns: 3fr 1fr; gap: 2rem; }
-        @media (max-width: 968px) { .sections-divider { grid-template-columns: 1fr; } }
 
-        /* Category Tabs */
-        .categories-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.5rem; }
-        .tab-btn {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 0.5rem 1.25rem;
-            border-radius: 9999px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
+        /* ================= INFINITE MOVING MARQUEE SHOWCASE ================= */
+        .marquee-title { font-size: 1.25rem; font-weight: 700; color: var(--text-muted); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; text-transform: uppercase; letter-spacing: 1px;}
+        .marquee-wrapper { 
+            width: 100vw; 
+            margin-left: calc(-50vw + 50%); 
+            background: linear-gradient(90deg, #1e1b4b 0%, #0f172a 100%);
+            padding: 1.5rem 0; 
+            overflow: hidden; 
+            position: relative;
+            margin-bottom: 3rem;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
-        .tab-btn.active, .tab-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .marquee-content { display: flex; width: max-content; animation: infiniteScroll 25s linear infinite; gap: 2rem; }
+        .marquee-wrapper:hover .marquee-content { animation-play-state: paused; } /* Pause movement on hover */
 
-        /* Store Products Grid */
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
-        .product-card {
+        .marquee-card {
             background: var(--surface);
             border: 1px solid var(--border);
+            width: 260px;
             border-radius: 12px;
             overflow: hidden;
-            transition: all 0.2s;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            padding: 0.75rem;
+            gap: 1rem;
+            flex-shrink: 0;
         }
-        .product-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
-        .product-img { width: 100%; height: 200px; object-fit: cover; background: #e2e8f0; }
+        .marquee-card img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; background: #334155; }
+        .marquee-card-info { display: flex; flex-direction: column; justify-content: center; }
+        .marquee-card-name { font-weight: 600; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+        .marquee-card-price { color: #60a5fa; font-weight: 700; font-size: 0.9rem; margin-top: 0.25rem; }
+
+        @keyframes infiniteScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Layout Grid Blocks Split */
+        .shop-layout { display: grid; grid-template-columns: 240px 1fr; gap: 2rem; }
+        @media (max-width: 768px) { .shop-layout { grid-template-columns: 1fr; } }
+
+        /* Left Side: Dedicated Category Selection Hub */
+        .category-sidebar { background: var(--surface); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; height: fit-content; }
+        .category-sidebar h3 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; text-transform: uppercase; }
+        .category-list { display: flex; flex-direction: column; gap: 0.5rem; }
+        .cat-link-btn { background: none; border: none; text-align: left; padding: 0.75rem 1rem; border-radius: 8px; color: var(--text-muted); font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .cat-link-btn:hover, .cat-link-btn.active { background: #2d3d54; color: white; }
+
+        /* Right Side: Grid Showcase Area */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
+        .product-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: all 0.2s; display: flex; flex-direction: column; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 20px -5px rgba(0,0,0,0.3); border-color: #475569; }
+        .product-img { width: 100%; height: 180px; object-fit: cover; background: #334155; }
         .product-info { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .product-name { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
-        .product-cat { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
         .product-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
-        .product-price { font-size: 1.15rem; font-weight: 700; color: var(--primary); }
-        .add-cart-btn { background: #eff6ff; color: var(--primary); border: none; padding: 0.5rem 0.75rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
-        .add-cart-btn:hover { background: var(--primary); color: white; }
+        .product-price { font-size: 1.15rem; font-weight: 700; color: #3b82f6; }
+        .add-cart-btn { background: #2563eb; color: white; border: none; padding: 0.5rem 0.75rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+        .add-cart-btn:hover { background: var(--primary-dark); }
 
-        /* General Ticket Box Widget */
-        .ticket-box { background: var(--surface); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; height: fit-content; }
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 0.4rem; font-weight: 500; font-size: 0.85rem; }
-        input, textarea { width: 100%; padding: 0.7rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; outline: none; }
+        /* ================= POPUP MODAL SUPPORT TICKET SYSTEM ================= */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: var(--surface); border: 1px solid var(--border); padding: 2rem; border-radius: 16px; width: 100%; max-width: 500px; position: relative; }
+        .close-modal { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+        
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; margin-bottom: 0.4rem; font-weight: 500; font-size: 0.85rem; color: var(--text-muted); }
+        input, textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--border); background: #111827; color: white; border-radius: 8px; font-size: 0.95rem; outline: none; }
         input:focus, textarea:focus { border-color: var(--primary); }
-        .btn { width: 100%; padding: 0.75rem; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; display: block; text-align: center; }
-        .btn:hover { background: var(--primary-hover); }
+        .btn { width: 100%; padding: 0.85rem; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; text-align: center; }
+        .btn:hover { background: var(--primary-dark); }
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="index.html" class="logo">buyanything123</a>
+        <a href="index.html" class="logo">Buy<span>Anything</span></a>
         <div class="nav-right">
-            <a href="cart.html" class="nav-btn" id="openCartBtn">
+            <!-- Ticket Toggle button explicitly asked -->
+            <button class="nav-btn" id="openTicketBtn"><i class="fa-solid fa-envelope-open-text"></i> Ticket</button>
+            <a href="cart.html" class="nav-btn">
                 <i class="fa-solid fa-shopping-cart"></i> Cart 
                 <span class="cart-count" id="cartCount">0</span>
             </a>
-            <a href="admin.html" class="nav-btn"><i class="fa-solid fa-gears"></i> Admin Settings</a>
+            <a href="admin.html" class="nav-btn"><i class="fa-solid fa-user-shield"></i> Admin Settings</a>
         </div>
     </nav>
 
+    <!-- Side-by-side moving catalog ribbon layout -->
+    <div class="marquee-wrapper">
+        <div class="marquee-content" id="movingShowcase"></div>
+    </div>
+
     <div class="container">
-        <div class="sections-divider">
-            <!-- Left: Store View Catalog -->
-            <div id="shopView">
-                <div class="categories-tabs" id="categoriesTabs"></div>
-                <div class="products-grid" id="productsGrid"></div>
+        <h2 class="marquee-title"><i class="fa-solid fa-store"></i> Explore Active Inventory</h2>
+        <div class="shop-layout">
+            
+            <!-- Left Side Category Widget -->
+            <div class="category-sidebar">
+                <h3>Departments</h3>
+                <div class="category-list" id="categoryHub"></div>
             </div>
 
-            <!-- Right: Support Help Ticket Submission Form -->
-            <div class="ticket-box">
-                <h3><i class="fa-solid fa-envelope-open-text"></i> Support Center</h3>
-                <p style="font-size:0.85rem; color: var(--text-muted); margin-bottom:1rem;">Have a question? File an official support ticket directly with our administration staff.</p>
-                <form id="supportTicketForm">
-                    <div class="form-group">
-                        <label>Your Name</label>
-                        <input type="text" id="ticketUser" placeholder="John Doe" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Your Contact Email</label>
-                        <input type="email" id="ticketEmail" placeholder="john@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Message Detail</label>
-                        <textarea id="ticketMsg" rows="4" placeholder="How can we help you today?" required></textarea>
-                    </div>
-                    <button type="submit" class="btn"><i class="fa-solid fa-paper-plane"></i> File General Ticket</button>
-                </form>
+            <!-- Right Side Main Grid -->
+            <div id="shopView">
+                <div class="products-grid" id="productsGrid"></div>
             </div>
         </div>
     </div>
 
-    <!-- Core Logic Engine Script -->
-    <script src="script.js"></script>
-</body>
-</html>
+    <!-- Isolated Hidden Support Ticket Overlay -->
+    <div class="modal" id="ticketModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeTicketBtn">&times;</button>
+            <h3 style="margin-bottom: 0.5rem;"><i class="fa-solid fa-ticket"></i> Open Support Ticket</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Fill out this form to submit your inquiry directly to our administration desk via email.</p>
+            
+            <!-- Secure outbox processing via FormSubmit -->
+            <form id="supportTicketForm" action="https://formsubmit.co" method="POST">
+<div class="form-group">
+    <label for="ticketUser">Your Name</label>
+    <input type="text" id="ticketUser" placeholder="Alex Smith" required>
+</div>
+
+<div class="form-group">
+    <label for="ticketEmail">Your Contact Return Email</label>
+    <input type="email" id="ticketEmail" placeholder="alex@school.com" required>
+</div>
+
+<div class="form-group">
+    <label for="ticketMsg">Inquiry Message</label>
+    <textarea id="ticketMsg" rows="4" placeholder="How can we help you?" required></textarea>
+</div>
+
+<button type="submit" class="btn">Dispatch Ticket Email</button>
