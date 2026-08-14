@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname.toLowerCase();
 
     // Flexible path checker logic to support Render's automatic clean-url trailing-slash trims
-    const isHomePage = path === '/' || path.endsWith('index.html') || path.endsWith('index');
+    const isHomePage = path === '/' || path.endsWith('index.html') || path.endsWith('index') || (!path.includes('admin') && !path.includes('cart'));
     const isAdminPage = path.includes('admin');
     const isCartPage = path.includes('cart');
 
@@ -33,6 +33,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     if (isAdminPage) {
         setupAdminInstantGate();
+        setupAdminFormListeners(); // Safe wrapped activation execution
     }
     if (isCartPage) {
         renderTerminalCartContents();
@@ -46,7 +47,6 @@ function renderMarqueeScroller() {
     if (!box) return;
     box.innerHTML = '';
     
-    // Triple array contents to map smooth looping transition overlaps cleanly
     const multiLoopItems = [...storeData.products, ...storeData.products, ...storeData.products];
     
     multiLoopItems.forEach(p => {
@@ -98,8 +98,6 @@ function renderGridInventory() {
     viewItems.forEach((prod, index) => {
         const card = document.createElement('div');
         card.className = 'product-card';
-        
-        // Staggered incremental entrance display offsets
         card.style.animationDelay = `${index * 0.05}s`;
         
         card.innerHTML = `
@@ -142,19 +140,11 @@ function setupTicketModalControls() {
 
     if(form) form.action = `https://formsubmit.co{storeData.adminTargetEmail}`;
 
-    if(openBtn) {
-        openBtn.onclick = () => {
-            modal.classList.add('open');
-        }
-    }
-    if(closeBtn) {
-        closeBtn.onclick = () => {
-            modal.classList.remove('open');
-        }
-    }
+    if(openBtn) openBtn.onclick = () => modal.classList.add('open');
+    if(closeBtn) closeBtn.onclick = () => modal.classList.remove('open');
 }
 
-/* ================= MULTI-TIER REINFORCED ADMIN LOCKSCREEN GATE ================= */
+/* ================= REINFORCED ADMIN LOCKSCREEN GATE ================= */
 function setupAdminInstantGate() {
     const input = document.getElementById('password');
     const gate = document.getElementById('adminAuthGate');
@@ -163,79 +153,68 @@ function setupAdminInstantGate() {
 
     if (!input || !submitBtn) return;
 
-    // Unified verification check runner logic
     function processVerificationCheck(isManualClick = false) {
         const entryValue = input.value.trim().toLowerCase();
 
-        // Validates passcode string variations seamlessly
         if (entryValue === "buyanything 123" || entryValue === "buyanything123") {
             gate.style.display = 'none';
             desk.style.display = 'block';
-            document.getElementById('adminAlertEmail').value = storeData.adminTargetEmail;
+            
+            const emailInput = document.getElementById('adminAlertEmail');
+            if (emailInput) emailInput.value = storeData.adminTargetEmail;
+            
             renderAdminTools();
         } else if (isManualClick) {
-            alert("Invalid security password code credentials.");
+            alert("Invalid security password credentials. Please verify your entry and try again.");
         }
     }
 
-    // Path A: Click Submit Button Logic Action
-    submitBtn.addEventListener('click', () => {
-        processVerificationCheck(true);
-    });
-
-    // Path B: Keypress Enter Key Logic Action
-    input.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            processVerificationCheck(true);
-        }
-    });
-
-    // Path C: Instant live matching fallbacks
-    input.addEventListener('input', () => {
-        processVerificationCheck(false);
-    });
+    submitBtn.addEventListener('click', () => processVerificationCheck(true));
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); processVerificationCheck(true); } });
+    input.addEventListener('input', () => processVerificationCheck(false));
 
     const exitBtn = document.getElementById('exitControlBtn');
     if (exitBtn) exitBtn.onclick = () => window.location.href = 'index.html';
 }
 
 function renderAdminTools() {
-    document.getElementById('saveSystemTargetBtn').onclick = () => {
-        storeData.adminTargetEmail = document.getElementById('adminAlertEmail').value.trim();
-        saveToStorage();
-        alert("Operational Email target destination updated.");
-    };
+    const targetSaveBtn = document.getElementById('saveSystemTargetBtn');
+    if (targetSaveBtn) {
+        targetSaveBtn.onclick = () => {
+            const emailField = document.getElementById('adminAlertEmail');
+            if (emailField) {
+                storeData.adminTargetEmail = emailField.value.trim();
+                saveToStorage();
+                alert("Operational Email target destination updated.");
+            }
+        };
+    }
 
     const select = document.getElementById('prodCategory');
     const cList = document.getElementById('adminCategoriesList');
-    if(!select || !cList) return;
-    
-    select.innerHTML = ''; cList.innerHTML = '';
-    
-    storeData.categories.filter(c => c !== "All").forEach(cat => {
-        const o = document.createElement('option'); o.value = cat; o.textContent = cat; select.appendChild(o);
-        const r = document.createElement('div'); r.className = 'list-item';
-        r.innerHTML = `<span>${cat}</span><button class="delete-btn" onclick="dropCategory('${cat}')"><i class="fa-solid fa-trash"></i></button>`;
-        cList.appendChild(r);
-    });
+    if(select && cList) {
+        select.innerHTML = ''; cList.innerHTML = '';
+        storeData.categories.filter(c => c !== "All").forEach(cat => {
+            const o = document.createElement('option'); o.value = cat; o.textContent = cat; select.appendChild(o);
+            const r = document.createElement('div'); r.className = 'list-item';
+            r.innerHTML = `<span>${cat}</span><button class="delete-btn" onclick="dropCategory('${cat}')"><i class="fa-solid fa-trash"></i></button>`;
+            cList.appendChild(r);
+        });
+    }
 
     const pList = document.getElementById('adminProductsList'); 
-    if(!pList) return;
-    pList.innerHTML = '';
-    
-    storeData.products.forEach(p => {
-        const r = document.createElement('div'); r.className = 'list-item';
-        r.innerHTML = `<span>${p.name} ($${p.price.toFixed(2)})</span><button class="delete-btn" onclick="dropProduct(${p.id})"><i class="fa-solid fa-trash"></i></button>`;
-        pList.appendChild(r);
-    });
+    if(pList) {
+        pList.innerHTML = '';
+        storeData.products.forEach(p => {
+            const r = document.createElement('div'); r.className = 'list-item';
+            r.innerHTML = `<span>${p.name} ($${p.price.toFixed(2)})</span><button class="delete-btn" onclick="dropProduct(${p.id})"><i class="fa-solid fa-trash"></i></button>`;
+            pList.appendChild(r);
+        });
+    }
 }
 
-// Category addition submission attachment hook actions
-window.addEventListener('load', () => {
-    const path = window.location.pathname.toLowerCase();
-    if (!path.includes('admin')) return;
-
+// Protected Existence Check Safe Initializer for forms setup
+function setupAdminFormListeners() {
     const addCatForm = document.getElementById('addCategoryForm');
     const addProdForm = document.getElementById('addProductForm');
 
@@ -245,37 +224,33 @@ window.addEventListener('load', () => {
             const v = document.getElementById('newCategoryName').value.trim();
             if(v && !storeData.categories.includes(v)) {
                 storeData.categories.push(v); saveToStorage(); renderAdminTools();
-            document.getElementById('newCategoryName').value = '';
+                document.getElementById('newCategoryName').value = '';
+            }
         });
     }
 
-    if (addProdForm) {
-        addProdForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('prodName').value.trim();
-            const price = parseFloat(document.getElementById('prodPrice').value);
-            const category = document.getElementById('prodCategory').value;
-            
-            // Fixed AI Image URL string template rules
-            let imgUrl = document.getElementById('useAIImage').checked
-                ? `https://unsplash.com{encodeURIComponent(name)},product`
-                : (document.getElementById('prodImgUrl').value.trim() || 'https://unsplash.com');
+    if(addProdForm) {
+        addProdForm.addEventListener('submit', (e) => {e.preventDefault();
+        const name = document.getElementById('prodName').value.trim();
+        const price = parseFloat(document.getElementById('prodPrice').value);
+        const category = document.getElementById('prodCategory').value;
+        
+        let imgUrl = document.getElementById('useAIImage').checked 
+            ? `https://unsplash.com{encodeURIComponent(name)},product`
+            : (document.getElementById('prodImgUrl').value.trim() || 'https://unsplash.com');
 
-            storeData.products.push({ id: Date.now(), name, price, category, img: imgUrl });
-            saveToStorage(); 
-            renderAdminTools();
-            
-            document.getElementById('prodName').value = ''; 
-            document.getElementById('prodPrice').value = '';
-        });
-    }
-});
+        storeData.products.push({ id: Date.now(), name, price, category, img: imgUrl });
+        saveToStorage(); 
+        renderAdminTools();
+        
+        document.getElementById('prodName').value = ''; 
+        document.getElementById('prodPrice').value = '';
+    });
+}
 
 window.dropCategory = function(name) {
     storeData.categories = storeData.categories.filter(c => c !== name);
-    storeData.products.forEach(p => { 
-        if (p.category === name) p.category = "All"; 
-    });
+    storeData.products.forEach(p => { if(p.category === name) p.category = "All"; });
     saveToStorage(); 
     renderAdminTools();
 };
@@ -290,7 +265,7 @@ window.dropProduct = function(id) {
 function renderTerminalCartContents() {
     const container = document.getElementById('cartItemsContainer');
     const totalLabel = document.getElementById('cartTotalSum');
-    if (!container) return;
+    if (!container || !totalLabel) return;
     container.innerHTML = '';
 
     if (globalShoppingCart.length === 0) {
@@ -321,17 +296,23 @@ function setupCartCheckoutSystem() {
     const form = document.getElementById('checkoutPurchaseTicketForm');
     if (form) form.action = `https://formsubmit.co{storeData.adminTargetEmail}`;
 
-    document.getElementById('clearCartBtn').onclick = () => {
-        globalShoppingCart = []; 
-        saveCartToStorage(); 
-        renderTerminalCartContents();
-    };
-    
-    document.getElementById('proceedCheckoutBtn').onclick = () => {
-        if (globalShoppingCart.length === 0) return alert('Cart empty');
-        document.getElementById('proceedCheckoutBtn').style.display = 'none';
-        document.getElementById('checkoutFormBlock').style.display = 'block';
-    };
+    const clearBtn = document.getElementById('clearCartBtn');
+    if (clearBtn) {
+        clearBtn.onclick = () => { 
+            globalShoppingCart = []; 
+            saveCartToStorage(); 
+            renderTerminalCartContents(); 
+        };
+    }
+
+    const proceedBtn = document.getElementById('proceedCheckoutBtn');
+    if (proceedBtn) {
+        proceedBtn.onclick = () => {
+            if (globalShoppingCart.length === 0) return alert('Cart empty');
+            document.getElementById('proceedCheckoutBtn').style.display = 'none';
+            document.getElementById('checkoutFormBlock').style.display = 'block';
+        };
+    }
     
     if (form) {
         form.addEventListener('submit', () => {
