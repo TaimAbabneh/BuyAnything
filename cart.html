@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyAnything123 - Checkout Terminal</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- Google Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --border: #e2e8f0;
+            --text-muted: #64748b;
+            --success: #22c55e;
+            --success-hover: #16a34a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 3rem 1rem; }
+
+        .checkout-container { max-width: 650px; margin: 0 auto; background: var(--surface); border: 1px solid var(--border); padding: 2.5rem; border-radius: 16px; position: relative; }
+        .close-btn { position: absolute; top: 1.25rem; right: 1.25rem; background: none; border: none; font-size: 1.75rem; cursor: pointer; color: var(--text-muted); }
+
+        h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+
+        .cart-item-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+        .cart-totals { margin: 1.5rem 0; padding-top: 1rem; border-top: 2px solid var(--border); display: flex; justify-content: space-between; font-weight: 700; font-size: 1.3rem; }
+
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; margin-bottom: 0.4rem; font-weight: 500; font-size: 0.85rem; }
+        input { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; outline: none; }
+        input:focus { border-color: var(--primary); }
+        
+        .btn { width: 100%; padding: 0.85rem; border: none; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.2s; display: block; text-align: center; margin-top: 1rem; text-decoration: none; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: var(--success-hover); }
+        .btn-secondary { background: #f1f5f9; color: var(--text); }
+
+        .school-parameters-box { background: #f1f5f9; padding: 1.5rem; border-radius: 12px; margin-top: 2rem; border: 1px solid var(--border); }
+        .grid-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    </style>
+</head>
+<body>
+
+    <div class="checkout-container">
+        <button class="close-btn" onclick="window.location.href='index.html'">&times;</button>
+        
+        <h2><i class="fa-solid fa-basket-shopping" style="color: var(--primary);"></i> Your Selected Items</h2>
+        
+        <div id="cartItemsContainer"></div>
+        
+        <div class="cart-totals">
+            <span>Total Due:</span>
+            <span id="cartTotalSum">$0.00</span>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="proceedCheckoutBtn">Proceed to School Purchase Ticket</button>
+        <button type="button" class="btn btn-secondary" id="clearCartBtn">Clear Cart</button>
+
+        <!-- School Parameters Output Card -->
+        <div id="checkoutFormBlock" class="school-parameters-box" style="display: none;">
+            <h3><i class="fa-solid fa-school" style="color: var(--primary);"></i> School Ticket Hand-off Parameters</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">Complete this specific transaction ticket information to dispatch our physical delivery messengers directly to your classroom.</p>
+            
+            <form id="checkoutPurchaseTicketForm">
+                <div class="form-group">
+                    <label>Your Name / Student ID</label>
+                    <input type="text" id="orderBuyerName" required placeholder="Alex Smith">
+                </div>
+                <div class="form-group">
+                    <label>School Campus Name</label>
+                    <input type="text" id="orderSchoolCampus" required placeholder="Oakridge High School">
+                </div>
+                
+                <div class="grid-split">
+                    <div class="form-group">
+                        <label>Target Delivery Room / Location</label>
+                        <input type="text" id="orderLocationRoom" required placeholder="Room 402 / Cafeteria">
+                    </div>
+                    <div class="form-group">
+                        <label>Desired Hand-off Time Slot</label>
+                        <input type="time" id="orderTargetTime" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-success">Finalize Purchase Delivery Ticket</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
