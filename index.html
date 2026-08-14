@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BuyAnything123 - Premium Shop</title>
-    <!-- FontAwesome for clean icons -->
+    <title>BuyAnything123 - Premium School Shop</title>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cloudflare.com">
     <!-- Google Fonts -->
     <link href="https://googleapis.com" rel="stylesheet">
@@ -17,24 +17,12 @@
             --text: #0f172a;
             --text-muted: #64748b;
             --border: #e2e8f0;
-            --danger: #ef4444;
-            --success: #22c55e;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 5rem; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.5;
-        }
-
-        /* Navbar */
+        /* Navigation Header */
         nav {
             background: var(--surface);
             border-bottom: 1px solid var(--border);
@@ -46,44 +34,32 @@
             top: 0;
             z-index: 100;
         }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            text-decoration: none;
-        }
-
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); text-decoration: none; }
+        .nav-right { display: flex; gap: 1rem; align-items: center; }
         .nav-btn {
             background: #f1f5f9;
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
             transition: all 0.2s;
-        }
-
-        .nav-btn:hover {
-            background: var(--border);
-        }
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        /* Category Filter Tabs */
-        .categories-tabs {
             display: flex;
+            align-items: center;
             gap: 0.5rem;
-            margin-bottom: 2rem;
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
+            text-decoration: none;
+            color: var(--text);
         }
+        .nav-btn:hover { background: var(--border); }
+        .cart-count { background: var(--primary); color: white; padding: 0.1rem 0.5rem; border-radius: 50%; font-size: 0.8rem; }
 
+        /* Main Workspace Container */
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .sections-divider { display: grid; grid-template-columns: 3fr 1fr; gap: 2rem; }
+        @media (max-width: 968px) { .sections-divider { grid-template-columns: 1fr; } }
+
+        /* Category Tabs */
+        .categories-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.5rem; }
         .tab-btn {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -93,246 +69,84 @@
             white-space: nowrap;
             transition: all 0.2s;
         }
+        .tab-btn.active, .tab-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-        .tab-btn.active, .tab-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* Products Grid */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
+        /* Store Products Grid */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
         .product-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
             overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
         }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
+        .product-img { width: 100%; height: 200px; object-fit: cover; background: #e2e8f0; }
+        .product-info { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .product-name { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .product-cat { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+        .product-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .product-price { font-size: 1.15rem; font-weight: 700; color: var(--primary); }
+        .add-cart-btn { background: #eff6ff; color: var(--primary); border: none; padding: 0.5rem 0.75rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .add-cart-btn:hover { background: var(--primary); color: white; }
 
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-        }
-
-        .product-img {
-            width: 100%;
-            height: 240px;
-            object-fit: cover;
-            background: #e2e8f0;
-        }
-
-        .product-info {
-            padding: 1.25rem;
-        }
-
-        .product-cat {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .product-name {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .product-price {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        /* Admin Modal & Panel */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background: var(--surface);
-            padding: 2rem;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 500px;
-            position: relative;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            font-size: 1.25rem;
-            cursor: pointer;
-            color: var(--text-muted);
-        }
-
-        /* Forms styling */
-        h2 { margin-bottom: 1.5rem; }
-        .form-group { margin-bottom: 1.25rem; }
-        label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.875rem;}
-        input, select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-        }
-        input:focus, select:focus { border-color: var(--primary); }
-        
-        .btn {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+        /* General Ticket Box Widget */
+        .ticket-box { background: var(--surface); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; height: fit-content; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.4rem; font-weight: 500; font-size: 0.85rem; }
+        input, textarea { width: 100%; padding: 0.7rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; outline: none; }
+        input:focus, textarea:focus { border-color: var(--primary); }
+        .btn { width: 100%; padding: 0.75rem; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; display: block; text-align: center; }
         .btn:hover { background: var(--primary-hover); }
-
-        /* Admin Layout Grid */
-        .admin-section {
-            display: none;
-            margin-top: 2rem;
-            border-top: 2px dashed var(--border);
-            padding-top: 2rem;
-        }
-        .admin-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-        @media (max-width: 768px) {
-            .admin-grid { grid-template-columns: 1fr; }
-        }
-
-        .panel-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 1.5rem;
-            border-radius: 12px;
-        }
-
-        .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border);
-        }
-        .delete-btn {
-            background: none;
-            border: none;
-            color: var(--danger);
-            cursor: pointer;
-        }
-
-        /* AI Checkbox Container */
-        .ai-toggle-box {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #eff6ff;
-            padding: 0.75rem;
-            border-radius: 8px;
-            border: 1px solid #bfdbfe;
-        }
-        .ai-toggle-box input { width: auto; }
     </style>
 </head>
 <body>
 
-    <!-- Navigation -->
     <nav>
-        <a href="#" class="logo">buyanything123</a>
-        <button class="nav-btn" id="adminControlBtn"><i class="fa-solid fa-lock"></i> Admin Settings</button>
+        <a href="index.html" class="logo">buyanything123</a>
+        <div class="nav-right">
+            <a href="cart.html" class="nav-btn" id="openCartBtn">
+                <i class="fa-solid fa-shopping-cart"></i> Cart 
+                <span class="cart-count" id="cartCount">0</span>
+            </a>
+            <a href="admin.html" class="nav-btn"><i class="fa-solid fa-gears"></i> Admin Settings</a>
+        </div>
     </nav>
 
     <div class="container">
-        <!-- Shop Section -->
-        <div id="shopView">
-            <div class="categories-tabs" id="categoriesTabs">
-                <!-- Dynamically generated -->
+        <div class="sections-divider">
+            <!-- Left: Store View Catalog -->
+            <div id="shopView">
+                <div class="categories-tabs" id="categoriesTabs"></div>
+                <div class="products-grid" id="productsGrid"></div>
             </div>
-            <div class="products-grid" id="productsGrid">
-                <!-- Dynamically generated -->
+
+            <!-- Right: Support Help Ticket Submission Form -->
+            <div class="ticket-box">
+                <h3><i class="fa-solid fa-envelope-open-text"></i> Support Center</h3>
+                <p style="font-size:0.85rem; color: var(--text-muted); margin-bottom:1rem;">Have a question? File an official support ticket directly with our administration staff.</p>
+                <form id="supportTicketForm">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" id="ticketUser" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Your Contact Email</label>
+                        <input type="email" id="ticketEmail" placeholder="john@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Message Detail</label>
+                        <textarea id="ticketMsg" rows="4" placeholder="How can we help you today?" required></textarea>
+                    </div>
+                    <button type="submit" class="btn"><i class="fa-solid fa-paper-plane"></i> File General Ticket</button>
+                </form>
             </div>
         </div>
+    </div>
 
-        <!-- Admin Control Workspace Panel (Visible after password validation) -->
-        <div class="admin-section" id="adminPanel">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h2><i class="fa-solid fa-gear"></i> Admin Management Dashboard</h2>
-                <button class="nav-btn" onclick="logoutAdmin()" style="color: var(--danger)">Log Out</button>
-            </div>
-            
-            <div class="admin-grid">
-                <!-- Category Management -->
-                <div class="panel-box">
-                    <h3>Manage Categories</h3>
-                    <form id="addCategoryForm" style="margin-top: 1rem;">
-                        <div class="form-group">
-                            <input type="text" id="newCategoryName" placeholder="Category Name (e.g., Electronics)" required>
-                        </div>
-                        <button type="submit" class="btn"><i class="fa-solid fa-plus"></i> Add Category</button>
-                    </form>
-                    <div id="adminCategoriesList" style="margin-top: 1.5rem;">
-                        <!-- Category list with delete options -->
-                    </div>
-                </div>
-
-                <!-- Product Management -->
-                <div class="panel-box">
-                    <h3>Manage Products</h3>
-                    <form id="addProductForm" style="margin-top: 1rem;">
-                        <div class="form-group">
-                            <label>Product Name</label>
-                            <input type="text" id="prodName" required placeholder="iPhone 15, Running Shoes...">
-                        </div>
-                        <div class="form-group">
-                            <label>Price ($)</label>
-                            <input type="number" id="prodPrice" step="0.01" required placeholder="99.99">
-                        </div>
-                        <div class="form-group">
-                            <label>Category</label>
-                            <select id="prodCategory" required>
-                                <!-- Managed dynamically -->
-                            </select>
-Auto-Generate AI Image from Name
-                            Or Image URL
-
-                            Add Product
-
-                            x
-                            Admin Verification
-
-                            
-                            Enter Security Key
-
-                            Unlock Dashboard
-                            
+    <!-- Core Logic Engine Script -->
+    <script src="script.js"></script>
+</body>
+</html>
