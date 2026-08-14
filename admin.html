@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyAnything123 - Control Panel</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- Google Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --danger: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 2rem 1rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        .panel-box { background: var(--surface); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; margin-bottom: 0.4rem; font-weight: 500; font-size: 0.85rem; }
+        input, select { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; outline: none; }
+        input:focus, select:focus { border-color: var(--primary); }
+        
+        .btn { width: 100%; padding: 0.75rem; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; text-align: center; display: inline-block; text-decoration: none; }
+        .btn:hover { background: var(--primary-hover); }
+        .btn-danger { background: #fef2f2; color: var(--danger); border: 1px solid #fca5a5; }
+        .btn-danger:hover { background: #fee2e2; }
+        
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+        .delete-btn { background: none; border: none; color: var(--danger); cursor: pointer; }
+        .ai-toggle-box { display: flex; align-items: center; gap: 0.5rem; background: #eff6ff; padding: 0.75rem; border-radius: 8px; border: 1px solid #bfdbfe; }
+        .ai-toggle-box input { width: auto; cursor: pointer; }
+        
+        .modal-fallback { background: var(--surface); border: 1px solid var(--border); padding: 2.5rem; border-radius: 16px; max-width: 500px; margin: 4rem auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); position: relative; }
+        .close-icon { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; background: none; border: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Gate Verification Lock Screen -->
+        <div id="adminAuthGate" class="modal-fallback">
+            <button class="close-icon" onclick="window.location.href='index.html'">&times;</button>
+            <h2><i class="fa-solid fa-lock"></i> Admin Verification Screen</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Access requires a security key passcode.</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Security Key</label>
+                    <input type="password" id="password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn">Unlock Dashboard System</button>
+            </form>
+        </div>
+
+        <!-- Master Workspace Dashboard -->
+        <div id="adminPanelWorkspace" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                <h2><i class="fa-solid fa-gears"></i> Global Shop Configuration Control Panel</h2>
+                <button class="btn btn-danger" id="exitControlBtn" style="width: auto; padding: 0.6rem 1.2rem;"><i class="fa-solid fa-right-from-bracket"></i> Exit Control Session</button>
+            </div>
+
+            <!-- Email Notification Configuration -->
+            <div class="panel-box" style="background: #faf5ff; border-color: #e9d5ff;">
+                <h3><i class="fa-solid fa-sliders"></i> Master Notification Routing Settings</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">Set the operational email credentials here. Order notifications and support tickets will automatically route to this account.</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                    <div class="form-group">
+                        <label>Admin Notification Target Email Address</label>
+                        <input type="email" id="adminAlertEmail" placeholder="your-email@school.com">
+                    </div>
+                    <div class="form-group">
+                        <label>EmailJS Public Key API (Optional Tracker)</label>
+                        <input type="text" id="emailJsKey" placeholder="Paste Public Key string here">
+                    </div>
+                </div>
+                <button type="button" class="btn" id="saveSystemTargetBtn" style="background: #9333ea; width: auto; padding: 0.6rem 1.5rem; margin-top: 0.5rem;">Save System Target Coordinates</button>
+            </div>
+
+            <div class="admin-grid">
+                <!-- Manage Categories Card -->
+                <div class="panel-box">
+                    <h3>Manage Categories</h3>
+                    <form id="addCategoryForm" style="margin-top: 1rem; margin-bottom: 1.5rem;">
+                        <div class="form-group">
+                            <input type="text" id="newCategoryName" placeholder="e.g., Snacks, Stationery" required>
+                        </div>
+                        <button type="submit" class="btn">Add Category</button>
+                    </form>
+                    <div id="adminCategoriesList"></div>
+                </div>
+
+                <!-- Add Inventory Item Card -->
+                <div class="panel-box">
+                    <h3>Add Inventory Item</h3>
+                    <form id="addProductForm" style="margin-top: 1rem;">
+                        <div class="form-group">
+                            <label>Product Label</label>
+                            <input type="text" id="prodName" required placeholder="Energy Drink, Notebook...">
+                        </div>
+                        <div class="form-group">
+                            <label>Base Price ($)</label>
+                            <input type="number" id="prodPrice" step="0.01" required placeholder="3.50">
+                        </div>
+                        <div class="form-group">
+                            <label>Assigned Department Category Tag</label>
+                            <select id="prodCategory" required></select>
+                        </div>
+                        <div class="form-group ai-toggle-box" style="margin-bottom: 1rem;">
+                            <input type="checkbox" id="useAIImage" checked>
+                            <label for="useAIImage" style="margin: 0; color: #1e40af; font-weight: 600; cursor: pointer;">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Synthesize Image with Dynamic Product AI
+                            </label>
+                        </div>
+                        <div class="form-group" id="manualUrlBox" style="display: none;">
+                            <label>Custom Graphic URL</label>
+                            <input type="url" id="prodImgUrl" placeholder="https://images.com">
+                        </div>
+                        <button type="submit" class="btn">Deploy Product to Stock</button>
+                    </form>
+                </div>
+
+                <!-- Current Catalog List Card -->
+                <div class="panel-box">
+                    <h3>Current Inventory List</h3>
+                    <div id="adminProductsList" style="max-height: 400px; overflow-y: auto; margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
